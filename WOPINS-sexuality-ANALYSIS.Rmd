@@ -1,0 +1,139 @@
+---
+title: "WOPINS Sexuality Analysis"
+output: 
+  html_document:
+    df_print: paged
+    theme: lumen
+    highlight: haddock
+    toc: yes
+    toc_float: yes
+    code_fold: show
+    self_contained: true
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+
+# ----------
+# Setup 
+
+# Clear the workspace
+rm( list = ls() )
+
+# libraries
+library( here ) # for calling local directory
+library( dplyr ) # for working with the data
+library( network ) # for creating the network object
+library( sna ) # for working with the network
+library( ergm ) # for erg models
+library( pander ) # for tables
+
+
+# run the script to create the networks with the attributes
+source( here( "WOPINS-sexuality-BUILD.R" ) )
+
+
+```
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+
+# ----------
+# ERGMs
+
+# build function with formula for ergm
+net.formula <- function( net ){
+  net.formula <- 
+    ( net ~ edges 
+      + mutual 
+      + gwidegree( 0.25, fixed=TRUE )
+      + gwesp( 0.05, fixed = TRUE )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" )
+      + nodeocov( "MentalPhysicalHealth" )
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      + nodeicov( "SocialIntegration" )
+      + nodeocov( "SocialIntegration" )
+      + nodeicov( "timealone" )
+      + nodeocov( "timealone" )
+    )
+  
+  set.seed( 12345 )
+  net.fit <- ergm( net.formula )
+  return( net.fit )
+  
+}
+
+```
+
+### Unit 2 Model
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+
+# run the model for unit 2.
+summary( net.formula( u2.net ) )
+
+```
+
+Here is the ergm for *unit 2*. The main point of interest here is the coefficient for the `sex_minority` variable:
+
+  + The `nodeifactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **receive** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.10 level and *negative* indicating that women in the sexual minority are less likely to receive friendship ties.  
+
+  + The `nodeofactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **send** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.001 level and *positive* indicating that women in the sexual minority are more likely to send friendship ties.  
+
+----
+
+### Unit 3 Model
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+
+# run the model for unit 3.
+summary( net.formula( u3.net ) )
+
+```
+
+Here is the ergm for *unit 3*. The main point of interest here is the coefficient for the `sex_minority` variable. Neither coefficient is significant. Although, the coefficients are in the same direction as the models for Unit 2.
+
+### Pooled Model
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+  
+pooled.formula <- 
+    ( u2.u3.pooled.net ~ edges 
+      + mutual 
+      + gwidegree( 0.25, fixed=TRUE )
+      + gwesp( 0.05, fixed = TRUE )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" )
+      + nodeocov( "MentalPhysicalHealth" )
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      + nodeicov( "SocialIntegration" )
+      + nodeocov( "SocialIntegration" )
+      + nodeicov( "timealone" )
+      + nodeocov( "timealone" )
+    )
+  
+set.seed( 12345 )
+pooled.fit <- ergm( 
+  pooled.formula, 
+  constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) 
+  )
+
+summary( pooled.fit )
+
+```
+
+
+<br>
+<br>
+
+###### ***Last updated `r format(Sys.time(), '%d %B, %Y')`***

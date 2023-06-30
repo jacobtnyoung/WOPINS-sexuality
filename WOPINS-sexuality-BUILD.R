@@ -14,6 +14,7 @@ library( here ) # for calling local directory
 library( dplyr ) # for working with the data
 library( network ) # for creating the network object
 library( sna ) # for working with the network
+library( ergmito ) # to build the pooled network
 
 
 # ----------
@@ -65,8 +66,15 @@ for( i in 1: length( names.loop ) ){
 
 
 # ----------
+# build the block network
+
+u2.u3.net.list <- list( u2.net, u3.net )
+u2.u3.pooled.net <- blockdiagonalize( u2.u3.net.list, attrname = "block" )
+
+
+# ----------
 # clean workspace
-rm( list = ls()[! ls() %in% c("u2.net","u3.net")])
+rm( list = ls()[! ls() %in% c( "u2.net","u3.net","u2.u3.pooled.net" )])
 
 
 # ================================================================== #
