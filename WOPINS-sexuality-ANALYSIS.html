@@ -2847,24 +2847,45 @@ text-align: justify}
 ## 
 ## Monte Carlo Maximum Likelihood Results:
 ## 
-##                                Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                          -5.36180    0.53294      0 -10.061  &lt; 1e-04 ***
-## mutual                          1.56741    0.18970      0   8.263  &lt; 1e-04 ***
-## gwesp.OTP.fixed.0.05            1.13558    0.11855      0   9.579  &lt; 1e-04 ***
-## nodecov.healthchangefrom3mopre -0.04265    0.03037      0  -1.404 0.160234    
-## nodecov.MentalPhysicalHealth   -0.02749    0.04336      0  -0.634 0.526148    
-## nodeifactor.sex_minority.1     -0.20539    0.11323      0  -1.814 0.069698 .  
-## nodeofactor.sex_minority.1      0.43568    0.11548      0   3.773 0.000162 ***
-## nodematch.sex_minority         -0.01684    0.10696      0  -0.157 0.874872    
-## nodecov.SocialIntegration       0.19979    0.05941      0   3.363 0.000772 ***
-## nodecov.timealone               0.04258    0.03003      0   1.418 0.156225    
+##                                  Estimate Std. Error MCMC % z value Pr(&gt;|z|)
+## edges                           -5.457342   0.545569      0 -10.003  &lt; 1e-04
+## mutual                           1.685993   0.194487      0   8.669  &lt; 1e-04
+## gwideg.fixed.0.25               -0.415413   0.620192      0  -0.670  0.50298
+## gwesp.OTP.fixed.0.05             1.106574   0.126074      0   8.777  &lt; 1e-04
+## nodeicov.healthchangefrom3mopre -0.090143   0.069855      0  -1.290  0.19690
+## nodeocov.healthchangefrom3mopre  0.004912   0.068622      0   0.072  0.94293
+## nodeicov.MentalPhysicalHealth    0.380252   0.100730      0   3.775  0.00016
+## nodeocov.MentalPhysicalHealth   -0.430551   0.093319      0  -4.614  &lt; 1e-04
+## nodeifactor.sex_minority.1      -0.062674   0.120781      0  -0.519  0.60383
+## nodeofactor.sex_minority.1       0.293866   0.123682      0   2.376  0.01750
+## nodematch.sex_minority          -0.012359   0.110641      0  -0.112  0.91105
+## nodeicov.SocialIntegration      -0.153972   0.115673      0  -1.331  0.18316
+## nodeocov.SocialIntegration       0.571904   0.123696      0   4.623  &lt; 1e-04
+## nodeicov.timealone              -0.040786   0.060966      0  -0.669  0.50350
+## nodeocov.timealone               0.127326   0.063808      0   1.995  0.04599
+##                                    
+## edges                           ***
+## mutual                          ***
+## gwideg.fixed.0.25                  
+## gwesp.OTP.fixed.0.05            ***
+## nodeicov.healthchangefrom3mopre    
+## nodeocov.healthchangefrom3mopre    
+## nodeicov.MentalPhysicalHealth   ***
+## nodeocov.MentalPhysicalHealth   ***
+## nodeifactor.sex_minority.1         
+## nodeofactor.sex_minority.1      *  
+## nodematch.sex_minority             
+## nodeicov.SocialIntegration         
+## nodeocov.SocialIntegration      ***
+## nodeicov.timealone                 
+## nodeocov.timealone              *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ##      Null Deviance: 5415  on 3906  degrees of freedom
-##  Residual Deviance: 2240  on 3896  degrees of freedom
+##  Residual Deviance: 2217  on 3891  degrees of freedom
 ##  
-## AIC: 2260  BIC: 2323  (Smaller is better. MC Std. Err. = 0.9838)</code></pre>
+## AIC: 2247  BIC: 2341  (Smaller is better. MC Std. Err. = 0.6899)</code></pre>
 <p>Here is the ergm for <em>unit 2</em>. The main point of interest here
 is the coefficient for the <code>sex_minority</code> variable:</p>
 <ul>
@@ -2893,23 +2914,28 @@ ties.</p></li>
 ## Monte Carlo Maximum Likelihood Results:
 ## 
 ##                                 Estimate Std. Error MCMC % z value Pr(&gt;|z|)    
-## edges                          -4.248204   0.578116      0  -7.348   &lt;1e-04 ***
-## mutual                          1.722836   0.218878      0   7.871   &lt;1e-04 ***
-## gwesp.OTP.fixed.0.05            1.226261   0.129472      0   9.471   &lt;1e-04 ***
-## nodecov.healthchangefrom3mopre -0.042985   0.041691      0  -1.031    0.303    
-## nodecov.MentalPhysicalHealth   -0.056054   0.040154      0  -1.396    0.163    
-## nodeifactor.sex_minority.1     -0.067021   0.116046      0  -0.578    0.564    
-## nodeofactor.sex_minority.1      0.124695   0.114946      0   1.085    0.278    
-## nodematch.sex_minority          0.099775   0.108642      0   0.918    0.358    
-## nodecov.SocialIntegration       0.094467   0.063109      0   1.497    0.134    
-## nodecov.timealone               0.002581   0.030545      0   0.084    0.933    
+## edges                           -4.30372    0.61605      0  -6.986  &lt; 1e-04 ***
+## mutual                           1.86558    0.22505      0   8.290  &lt; 1e-04 ***
+## gwideg.fixed.0.25               -0.28764    0.52492      0  -0.548  0.58372    
+## gwesp.OTP.fixed.0.05             1.19346    0.13793      0   8.652  &lt; 1e-04 ***
+## nodeicov.healthchangefrom3mopre -0.10398    0.09855      0  -1.055  0.29138    
+## nodeocov.healthchangefrom3mopre  0.02670    0.10109      0   0.264  0.79171    
+## nodeicov.MentalPhysicalHealth    0.19838    0.09611      0   2.064  0.03900 *  
+## nodeocov.MentalPhysicalHealth   -0.30124    0.09213      0  -3.270  0.00108 ** 
+## nodeifactor.sex_minority.1      -0.11329    0.11677      0  -0.970  0.33197    
+## nodeofactor.sex_minority.1       0.15392    0.12091      0   1.273  0.20301    
+## nodematch.sex_minority           0.10427    0.10365      0   1.006  0.31438    
+## nodeicov.SocialIntegration       0.34224    0.15279      0   2.240  0.02509 *  
+## nodeocov.SocialIntegration      -0.15198    0.14599      0  -1.041  0.29786    
+## nodeicov.timealone              -0.06354    0.07213      0  -0.881  0.37835    
+## nodeocov.timealone               0.06963    0.07032      0   0.990  0.32209    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ##      Null Deviance: 4270  on 3080  degrees of freedom
-##  Residual Deviance: 1603  on 3070  degrees of freedom
+##  Residual Deviance: 1581  on 3065  degrees of freedom
 ##  
-## AIC: 1623  BIC: 1684  (Smaller is better. MC Std. Err. = 0.7321)</code></pre>
+## AIC: 1611  BIC: 1702  (Smaller is better. MC Std. Err. = 0.4742)</code></pre>
 <p>Here is the ergm for <em>unit 3</em>. The main point of interest here
 is the coefficient for the <code>sex_minority</code> variable. Neither
 coefficient is significant. Although, the coefficients are in the same
