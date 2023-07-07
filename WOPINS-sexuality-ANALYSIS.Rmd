@@ -16,7 +16,7 @@ body {
 text-align: justify}
 </style>
 
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r setup-chunk, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
 
 # ----------
 # Setup 
@@ -39,7 +39,7 @@ source( here( "WOPINS-sexuality-BUILD.R" ) )
 
 ```
 
-```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+```{r define-model-chunk, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 
 # ----------
 # ERGMs
@@ -48,16 +48,41 @@ source( here( "WOPINS-sexuality-BUILD.R" ) )
 net.formula <- function( net ){
   net.formula <- 
     ( net ~ edges 
+      
+      # structural terms
       + mutual 
       + gwidegree( 0.25, fixed=TRUE )
       + gwesp( 0.05, fixed = TRUE )
+      
+      # terms of interest
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      #+ nodeicov( "oldheadscale" )
+      #+ nodeocov( "oldheadscale" )
+      #+ absdiff( "oldheadscale" )
+      #+ nodeicov( "prismom" )
+      #+ nodeocov( "prismom" )
+      #+ nodematch( "prismom" )
+      + nodeicov( "sexacceptance_reverse" )
+      + nodeocov( "sexacceptance_reverse" )
+      + absdiff( "sexacceptance_reverse" )
+      
+      #controls
+      + nodeicov( "age" )
+      + nodeocov( "age" )
+      + nodeicov( "grade" )
+      + nodeocov( "grade" )
+      + nodeicov( "white" )
+      + nodeocov( "white" )
+      + nodeicov( "unitdays100" )
+      + nodeocov( "unitdays100" )
+      + nodeicov( "protestantbinary" )
+      + nodeocov( "protestantbinary" )
       + nodeicov( "healthchangefrom3mopre" )
       + nodeocov( "healthchangefrom3mopre" )
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
-      + nodeifactor( "sex_minority" )
-      + nodeofactor( "sex_minority" )
-      + nodematch( "sex_minority" )
       + nodeicov( "SocialIntegration" )
       + nodeocov( "SocialIntegration" )
       + nodeicov( "timealone" )
@@ -72,9 +97,11 @@ net.formula <- function( net ){
 
 ```
 
+## Models of Friendship
+
 ### Unit 2 Model
 
-```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r unit-2-model-chunk, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
 
 # run the model for unit 2.
 summary( net.formula( u2.net ) )
@@ -83,15 +110,21 @@ summary( net.formula( u2.net ) )
 
 Here is the ergm for *unit 2*. The main point of interest here is the coefficient for the `sex_minority` variable:
 
-  + The `nodeifactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **receive** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.10 level and *negative* indicating that women in the sexual minority are less likely to receive friendship ties.  
-
   + The `nodeofactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **send** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.001 level and *positive* indicating that women in the sexual minority are more likely to send friendship ties.  
+  
+  + There are some additional effects to comment on:
+  
+    + `oldheadscale`-more likely to receive ties, less likely to send ties, no homophily;
+    
+    + `sexacceptance_reverse`-more likely to send ties, less likely to receive ties, no homophily;
+
+
 
 ----
 
 ### Unit 3 Model
 
-```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r unit-3-model, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
 
 # run the model for unit 3.
 summary( net.formula( u3.net ) )
@@ -100,22 +133,48 @@ summary( net.formula( u3.net ) )
 
 Here is the ergm for *unit 3*. The main point of interest here is the coefficient for the `sex_minority` variable. Neither coefficient is significant. Although, the coefficients are in the same direction as the models for Unit 2.
 
+
 ### Pooled Model
 
-```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r pooled-model, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
   
 pooled.formula <- 
     ( u2.u3.pooled.net ~ edges 
+      
+      # structural terms
       + mutual 
       + gwidegree( 0.25, fixed=TRUE )
       + gwesp( 0.05, fixed = TRUE )
+      
+      # terms of interest
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      #+ nodeicov( "oldheadscale" )
+      #+ nodeocov( "oldheadscale" )
+      #+ absdiff( "oldheadscale" )
+      #+ nodeicov( "prismom" )
+      #+ nodeocov( "prismom" )
+      #+ nodematch( "prismom" )
+      + nodeicov( "sexacceptance_reverse" )
+      + nodeocov( "sexacceptance_reverse" )
+      + absdiff( "sexacceptance_reverse" )
+      
+      #controls
+      + nodeicov( "age" )
+      + nodeocov( "age" )
+      + nodeicov( "grade" )
+      + nodeocov( "grade" )
+      + nodeicov( "white" )
+      + nodeocov( "white" )
+      + nodeicov( "unitdays100" )
+      + nodeocov( "unitdays100" )
+      + nodeicov( "protestantbinary" )
+      + nodeocov( "protestantbinary" )
       + nodeicov( "healthchangefrom3mopre" )
       + nodeocov( "healthchangefrom3mopre" )
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
-      + nodeifactor( "sex_minority" )
-      + nodeofactor( "sex_minority" )
-      + nodematch( "sex_minority" )
       + nodeicov( "SocialIntegration" )
       + nodeocov( "SocialIntegration" )
       + nodeicov( "timealone" )
@@ -131,6 +190,24 @@ pooled.fit <- ergm(
 summary( pooled.fit )
 
 ```
+
+----
+
+## Models of Power/Influence
+
+HERE WITH UPDATING THESE
+
+For power and influence, I think the plan was to see how attitudes about sexuality are associated with status. Including sexual minority status would also be interesting. The hypothesis is that higher status women have more negative views of sex on the unit. However, we have primarily focused on age and pseudo-motherhood as measures of status, so it’s unclear how this will play out in the power and influence network. Does that make sense?
+
+Sounds good. The issue with the difference in units isn't that the association should be stronger in the good behavior unit, but rather that there are more high status "old heads" in that unit and they tended to not support sex. Not sure how to test this with an ERGM...
+
+Is this a sort of interaction?
+Need to look at the constraints and see if you can get that to work.
+
+
+Probably just trim the model down and run that to see if you can get it working first.
+
+Then add everything else.
 
 
 <br>

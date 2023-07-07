@@ -3,6 +3,10 @@
 .RData
 .Ruserdata
 young_data1.dta
+young_data2.dta
 GA_WOPINS3surveytakersonly.csv
 GA_WOPINS2surveytakersonly.csv
+PI_WOPINS2surveytakersonly.csv
+PI_WOPINS3surveytakersonly.csv
 .DS_Store
+trash-script.R
