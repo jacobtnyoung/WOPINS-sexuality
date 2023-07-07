@@ -90,7 +90,7 @@ I.u3.p <- eval.bic.I( u3.p.net, I )
 
 ```
 
-```{r plot-results, echo=TRUE}
+```{r plot-results-gwindegree, echo=TRUE}
 
 # look at the BICs
 par( mfrow = c( 2, 2 ) )
@@ -112,14 +112,14 @@ min( I.u3.p )
 # now estimate the models for gwesp with the best value 
 # for gwindegree identified above
 
-E.u2   <- eval.bic.E( u2.net,   E, min( I.u2 ) )
-E.u3   <- eval.bic.E( u3.net,   E, min( I.u3 ) )
-E.u2.p <- eval.bic.E( u2.p.net, E, min( I.u2.p ) )
-E.u3.p <- eval.bic.E( u3.p.net, E, min( I.u3.p ) )
+E.u2   <- eval.bic.E( u2.net,   E, I[which( I.u2 == min( I.u2 ) )] )
+E.u3   <- eval.bic.E( u3.net,   E, I[which( I.u3 == min( I.u3 ) )] )
+E.u2.p <- eval.bic.E( u2.p.net, E, I[which( I.u2.p == min( I.u2.p ) )] )
+E.u3.p <- eval.bic.E( u3.p.net, E, I[which( I.u3.p == min( I.u3.p ) )] )
 
 ```
 
-```{r plot-results, echo=TRUE}
+```{r plot-results-gwesp, echo=TRUE}
 
 par( mfrow = c( 2, 2 ) )
 plot( E, E.u2, type="b", main="BIC for gwesp (u2)" )
