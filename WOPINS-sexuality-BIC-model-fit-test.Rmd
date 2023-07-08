@@ -1,0 +1,141 @@
+---
+title: "WOPINS Sexuality BIC Analysis"
+output: 
+  html_document:
+    df_print: paged
+    theme: lumen
+    highlight: haddock
+    toc: yes
+    toc_float: yes
+    code_fold: show
+    self_contained: true
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r setup-chunk, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+
+# ----------
+# Setup 
+
+# Clear the workspace
+rm( list = ls() )
+
+# libraries
+library( here ) # for calling local directory
+library( dplyr ) # for working with the data
+library( network ) # for creating the network object
+library( sna ) # for working with the network
+library( ergm ) # for erg models
+library( pander ) # for tables
+
+
+# run the script to create the networks with the attributes
+source( here( "WOPINS-sexuality-BUILD.R" ) )
+
+
+```
+
+This file reports the results for various BIC values for the structural terms.
+
+
+```{r functions}
+
+# ----
+# Build the functions.
+
+# Set the seed to reproduce results.
+set.seed( 12345 )
+
+eval.bic.I <- function( net, I ){
+  bic.I <- rep( 0, length.out = length( I ) )
+  for ( i in 1:length( I ) ){
+    bic.I[i] <- 
+      summary( ergm( net ~ edges
+                   + mutual + twopath 
+                   + gwidegree( decay = I[i], fixed = TRUE )
+                   + gwesp( 0, fixed = TRUE ) ) )$bic
+  }		
+  return( bic.I )
+}
+
+eval.bic.E <- function( net, E, min.val ){
+  bic.E <- rep( 0, length.out = length( E ) )
+  for ( i in 1:length( E ) ){
+    bic.E[i] <- 
+      summary( ergm( net ~ edges
+                   + mutual + twopath 
+                   + gwidegree( decay = min.val, fixed = TRUE )
+                   + gwesp( E[i], fixed = TRUE ) ) )$bic
+  }		
+  return( bic.E )
+}
+
+```
+
+```{r estimate-models-gwindegree}
+
+# Set the range of values to examine
+I <- seq(0, 1.5, by = .05 )
+E <- seq(0, 1.5, by = .05 )
+
+# Estimate the models
+I.u2   <- eval.bic.I( u2.net, I )
+I.u3   <- eval.bic.I( u3.net, I )
+I.u2.p <- eval.bic.I( u2.p.net, I )
+I.u3.p <- eval.bic.I( u3.p.net, I )
+
+```
+
+```{r plot-results-gwindegree, echo=TRUE}
+
+# look at the BICs
+par( mfrow = c( 2, 2 ) )
+plot( I, I.u2, type="b", main="BIC for gwidegree (u2)" )
+plot( I, I.u3, type="b", main="BIC for gwidegree (u3)" )
+plot( I, I.u2.p, type="b", main="BIC for gwidegree (u2p)" )
+plot( I, I.u3.p, type="b", main="BIC for gwidegree(u3p)" )
+par( mfrow = c( 1, 1 ) )
+
+# find the minimums
+min( I.u2 )
+min( I.u3 )
+min( I.u2.p )
+min( I.u3.p )
+
+```
+
+```{r estimate-models-gwesp}
+# now estimate the models for gwesp with the best value 
+# for gwindegree identified above
+
+E.u2   <- eval.bic.E( u2.net,   E, I[which( I.u2 == min( I.u2 ) )] )
+E.u3   <- eval.bic.E( u3.net,   E, I[which( I.u3 == min( I.u3 ) )] )
+E.u2.p <- eval.bic.E( u2.p.net, E, I[which( I.u2.p == min( I.u2.p ) )] )
+E.u3.p <- eval.bic.E( u3.p.net, E, I[which( I.u3.p == min( I.u3.p ) )] )
+
+```
+
+```{r plot-results-gwesp, echo=TRUE}
+
+par( mfrow = c( 2, 2 ) )
+plot( E, E.u2, type="b", main="BIC for gwesp (u2)" )
+plot( E, E.u3, type="b", main="BIC for gwesp (u3)" )
+plot( E, E.u2.p, type="b", main="BIC for gwesp (u2p)" )
+plot( E, E.u3.p, type="b", main="BIC for gwesp(u3p)" )
+par( mfrow = c( 1, 1 ) )
+
+min( E.u2 )
+min( E.u3 )
+min( E.u2.p )
+min( E.u3.p )
+
+```
+
+<br>
+<br>
+
+###### ***Last updated `r format(Sys.time(), '%d %B, %Y')`***
