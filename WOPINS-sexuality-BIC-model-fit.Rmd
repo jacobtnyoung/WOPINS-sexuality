@@ -72,7 +72,7 @@ Begin with some rough estimates, prior to fine tuning.
 
 # Set the range of values to examine
 I <- seq( 0, 1.5, by = 0.25 )
-E <- seq( 0, 3.0, by = 0.25 )
+E <- seq( 0, 1.5, by = 0.25 )
 
 ```
 
