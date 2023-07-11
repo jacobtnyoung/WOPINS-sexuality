@@ -58,19 +58,25 @@ eval.bic <- function( net, I, E ){
     }
   }
   
-  colnames( model.bics ) <- paste("I @", as.character( I ) )
-  rownames( model.bics ) <- paste("E @", as.character( E ) )
+  rownames( model.bics ) <- paste("I @", as.character( I ) )
+  colnames( model.bics ) <- paste("E @", as.character( E ) )
   
   return( model.bics )
 }
 
 ```
 
-```{r estimate-models}
+Begin with some rough estimates, prior to fine tuning.
+
+```{r rough-estimate, echo=TRUE, eval=TRUE}
 
 # Set the range of values to examine
-I <- seq(0, 1.5, by = .05 )
-E <- seq(0, 1.5, by = .05 )
+I <- seq( 0, 1.5, by = 0.25 )
+E <- seq( 0, 3.0, by = 0.25 )
+
+```
+
+```{r rough-estimate-models}
 
 # Set the seed to reproduce results.
 set.seed( 12345 )
