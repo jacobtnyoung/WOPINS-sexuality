@@ -14,21 +14,8 @@ library( pander ) # for tables
 # run the script to create the networks with the attributes
 source( here( "WOPINS-sexuality-BUILD.R" ) )
 
-
-
-
-!!!THIS JUST NEEDS TO BE CLEANED UP AND BUILT
-
-
-
 # ----
 # Build the functions.
-
-# Set the seed to reproduce results.
-set.seed( 12345 )
-
-I <- cbind( 0 , 0.5 )
-E <- cbind( 0 , 0.5 )
 
 eval.bic <- function( net, I, E ){
   model.bics <- matrix( 0, nrow = length( I ), ncol = length( E ) )
@@ -42,8 +29,19 @@ eval.bic <- function( net, I, E ){
                      + gwesp( E[j], fixed = TRUE ) ) )$bic
     }
   }
+  
+  colnames( model.bics ) <- paste("I @", as.character( I ) )
+  rownames( model.bics ) <- paste("E @", as.character( E ) )
+  
   return( model.bics )
 }
+
+
+# Set the seed to reproduce results.
+set.seed( 12345 )
+
+I <- cbind( 0 , 0.5 )
+E <- cbind( 0 , 0.5 )
 
 I.u2   <- eval.bic( u2.net, I, E )
 I.u2
@@ -52,21 +50,4 @@ fit
 
 plot( I.u2[1:nrow( I.u2 ),], I.u2[,1:ncol( I.u2 )], type="b", main="BIC for gwidegree (u2)", xlab = "", ylab = "")
 min( I.u2 )
-
-
-# look at the BICs
-par( mfrow = c( 2, 2 ) )
-plot( I, I.u2, type="b", main="BIC for gwidegree (u2)" )
-plot( I, I.u3, type="b", main="BIC for gwidegree (u3)" )
-plot( I, I.u2.p, type="b", main="BIC for gwidegree (u2p)" )
-plot( I, I.u3.p, type="b", main="BIC for gwidegree(u3p)" )
-par( mfrow = c( 1, 1 ) )
-
-# find the minimums
-min( I.u2 )
-min( I.u3 )
-min( I.u2.p )
-min( I.u3.p )
-
-
 

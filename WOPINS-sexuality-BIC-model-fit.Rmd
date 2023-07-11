@@ -36,102 +36,68 @@ library( pander ) # for tables
 # run the script to create the networks with the attributes
 source( here( "WOPINS-sexuality-BUILD.R" ) )
 
-
 ```
 
 This file reports the results for various BIC values for the structural terms.
 
-
-```{r functions}
+```{r build-functions}
 
 # ----
 # Build the functions.
 
-# Set the seed to reproduce results.
-set.seed( 12345 )
-
-eval.bic.I <- function( net, I ){
-  bic.I <- rep( 0, length.out = length( I ) )
+eval.bic <- function( net, I, E ){
+  model.bics <- matrix( 0, nrow = length( I ), ncol = length( E ) )
+  
   for ( i in 1:length( I ) ){
-    bic.I[i] <- 
-      summary( ergm( net ~ edges
-                   + mutual + twopath 
-                   + gwidegree( decay = I[i], fixed = TRUE )
-                   + gwesp( 0, fixed = TRUE ) ) )$bic
-  }		
-  return( bic.I )
-}
-
-eval.bic.E <- function( net, E, min.val ){
-  bic.E <- rep( 0, length.out = length( E ) )
-  for ( i in 1:length( E ) ){
-    bic.E[i] <- 
-      summary( ergm( net ~ edges
-                   + mutual + twopath 
-                   + gwidegree( decay = min.val, fixed = TRUE )
-                   + gwesp( E[i], fixed = TRUE ) ) )$bic
-  }		
-  return( bic.E )
+    for ( j in 1:length( E ) ){
+      model.bics[i,j] <- 
+        summary( ergm( net ~ edges
+                     + mutual + twopath 
+                     + gwidegree( decay = I[i], fixed = TRUE )
+                     + gwesp( E[j], fixed = TRUE ) ) )$bic
+    }
+  }
+  
+  colnames( model.bics ) <- paste("I @", as.character( I ) )
+  rownames( model.bics ) <- paste("E @", as.character( E ) )
+  
+  return( model.bics )
 }
 
 ```
 
-```{r estimate-models-gwindegree}
+```{r estimate-models}
 
 # Set the range of values to examine
 I <- seq(0, 1.5, by = .05 )
 E <- seq(0, 1.5, by = .05 )
 
+# Set the seed to reproduce results.
+set.seed( 12345 )
+
 # Estimate the models
-I.u2   <- eval.bic.I( u2.net, I )
-I.u3   <- eval.bic.I( u3.net, I )
-I.u2.p <- eval.bic.I( u2.p.net, I )
-I.u3.p <- eval.bic.I( u3.p.net, I )
+bic.u2   <- eval.bic( u2.net  , I, E )
+bic.u3   <- eval.bic( u3.net  , I, E )
+bic.u2.p <- eval.bic( u2.p.net, I, E )
+bic.u3.p <- eval.bic( u3.p.net, I, E )
 
 ```
 
-```{r plot-results-gwindegree, echo=TRUE}
+```{r plot-results, echo=TRUE}
 
-# look at the BICs
+# plot the BICs based on the model terms
 par( mfrow = c( 2, 2 ) )
-plot( I, I.u2, type="b", main="BIC for gwidegree (u2)" )
-plot( I, I.u3, type="b", main="BIC for gwidegree (u3)" )
-plot( I, I.u2.p, type="b", main="BIC for gwidegree (u2p)" )
-plot( I, I.u3.p, type="b", main="BIC for gwidegree(u3p)" )
+plot( bic.u2[1:nrow( bic.u2 ),], bic.u2[,1:ncol( bic.u2 )], type="b", main="BIC for GW terms (u2)", xlab = "gwindegree", ylab = "gwesp")
+plot( bic.u3[1:nrow( bic.u3 ),], bic.u3[,1:ncol( bic.u3 )], type="b", main="BIC for GW terms (u3)", xlab = "gwindegree", ylab = "gwesp")
+plot( bic.u2.p[1:nrow( bic.u2.p ),], bic.u2.p[,1:ncol( bic.u2.p )], type="b", main="BIC for GW terms (u2.p)", xlab = "gwindegree", ylab = "gwesp")
+plot( bic.u3.p[1:nrow( bic.u3.p ),], bic.u3.p[,1:ncol( bic.u3.p )], type="b", main="BIC for GW terms (u3.p)", xlab = "gwindegree", ylab = "gwesp")
 par( mfrow = c( 1, 1 ) )
 
 # find the minimums
-min( I.u2 )
-min( I.u3 )
-min( I.u2.p )
-min( I.u3.p )
-
-```
-
-```{r estimate-models-gwesp}
-# now estimate the models for gwesp with the best value 
-# for gwindegree identified above
-
-E.u2   <- eval.bic.E( u2.net,   E, I[which( I.u2 == min( I.u2 ) )] )
-E.u3   <- eval.bic.E( u3.net,   E, I[which( I.u3 == min( I.u3 ) )] )
-E.u2.p <- eval.bic.E( u2.p.net, E, I[which( I.u2.p == min( I.u2.p ) )] )
-E.u3.p <- eval.bic.E( u3.p.net, E, I[which( I.u3.p == min( I.u3.p ) )] )
-
-```
-
-```{r plot-results-gwesp, echo=TRUE}
-
-par( mfrow = c( 2, 2 ) )
-plot( E, E.u2, type="b", main="BIC for gwesp (u2)" )
-plot( E, E.u3, type="b", main="BIC for gwesp (u3)" )
-plot( E, E.u2.p, type="b", main="BIC for gwesp (u2p)" )
-plot( E, E.u3.p, type="b", main="BIC for gwesp(u3p)" )
-par( mfrow = c( 1, 1 ) )
-
-min( E.u2 )
-min( E.u3 )
-min( E.u2.p )
-min( E.u3.p )
+min( bic.u2 )
+min( bic.u3 )
+min( bic.u2.p )
+min( bic.u3.p )
 
 ```
 
