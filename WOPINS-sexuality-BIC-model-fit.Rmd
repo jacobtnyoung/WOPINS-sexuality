@@ -93,17 +93,20 @@ E <- seq( 0, 1.5, by = 0.25 )
 set.seed( 12345 )
 
 # Estimate the models
-bic.u2   <- eval.bic( u2.net  , I, E )
-bic.u3   <- eval.bic( u3.net  , I, E )
-
+bic.u2   <- eval.bic( u2.net, I, E )
+bic.u3   <- eval.bic( u3.net, I, E )
+bic.pool <- eval.bic( u2.u3.pooled.net, I, E )
 
 ```
 
 ```{r}
 
 # plot the BICs based on the model terms
-plot( bic.u2[1:nrow( bic.u2 ),], bic.u2[,1:ncol( bic.u2 )], type="b", main="BIC for GW terms (u2)", xlab = "gwindegree", ylab = "gwesp")
-plot( bic.u3[1:nrow( bic.u3 ),], bic.u3[,1:ncol( bic.u3 )], type="b", main="BIC for GW terms (u3)", xlab = "gwindegree", ylab = "gwesp")
+#par( mfrow = c( 2,2 ) )
+#plot( bic.u2[1:nrow( bic.u2 ),], bic.u2[,1:ncol( bic.u2 )], type="b", main="BIC for GW terms (u2)", xlab = "gwindegree", ylab = "gwesp")
+#plot( bic.u3[1:nrow( bic.u3 ),], bic.u3[,1:ncol( bic.u3 )], type="b", main="BIC for GW terms (u3)", xlab = "gwindegree", ylab = "gwesp")
+#plot( bic.pool[1:nrow( bic.pool ),], bic.pool[,1:ncol( bic.pool )], type="b", main="BIC for GW terms (pooled)", xlab = "gwindegree", ylab = "gwesp")
+#par( mfrow = c( 1,1 ) )
 
 ```
 
@@ -117,13 +120,19 @@ The table shows that the best fitting value for the `gwindegree` term is 0.75 an
 
 ```{r}
 
-bic.u2 == min( bic.u2 )
+bic.u3 == min( bic.u3 )
 
 ```
 
 The table shows that the best fitting value for the `gwindegree` term is 1.25 and the `gwesp` term is 1.0.
 
+```{r}
 
+bic.pool == min( bic.pool )
+
+```
+
+The table shows that the best fitting value for the `gwindegree` term is ??? and the `gwesp` term is ???.
 
 <br>
 
@@ -131,40 +140,6 @@ The table shows that the best fitting value for the `gwindegree` term is 1.25 an
 
 # Power
 
-Begin with some rough estimates, prior to fine tuning.
-
-# HERE WITH GETTING THESE TO WORK!!!!
-
-```{r, echo=TRUE, eval=FALSE}
-
-# Set the range of values to examine
-I <- seq( 0, 1.5, by = 0.25 )
-E <- seq( 0, 1.5, by = 0.25 )
-
-```
-
-```{r, eval=FALSE}
-
-# Set the seed to reproduce results.
-set.seed( 12345 )
-
-# Estimate the models
-bic.u2.p <- eval.bic( u2.p.net, I, E )
-bic.u3.p <- eval.bic( u3.p.net, I, E )
-
-```
-
-```{r, echo=TRUE, eval=FALSE}
-
-# plot the BICs based on the model terms
-plot( bic.u2.p[1:nrow( bic.u2.p ),], bic.u2.p[,1:ncol( bic.u2.p )], type="b", main="BIC for GW terms (u2.p)", xlab = "gwindegree", ylab = "gwesp")
-plot( bic.u3.p[1:nrow( bic.u3.p ),], bic.u3.p[,1:ncol( bic.u3.p )], type="b", main="BIC for GW terms (u3.p)", xlab = "gwindegree", ylab = "gwesp")
-
-# find the minimums
-bic.u3.p == min( bic.u3.p )
-bic.u3.p == min( bic.u3.p )
-
-```
 
 ----
 

@@ -16,7 +16,14 @@ body {
 text-align: justify}
 </style>
 
-```{r setup-chunk, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r}
+
+# set the defaults for the codechunks
+knitr::opts_chunk$set( eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE )
+
+```
+
+```{r setup}
 
 # ----------
 # Setup 
@@ -39,28 +46,29 @@ source( here( "WOPINS-sexuality-BUILD.R" ) )
 
 ```
 
-```{r define-model-chunk, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+```{r define-friend-model}
 
 # ----------
 # ERGMs
 
 # build function with formula for ergm
-net.formula <- function( net ){
+net.formula <- function( net, gwideg.val, gwesp.val ){
   net.formula <- 
     ( net ~ edges 
       
       # structural terms
       + mutual 
-      + gwidegree( 0.25, fixed=TRUE )
-      + gwesp( 0.05, fixed = TRUE )
+      + twopath
+      + gwidegree( gwideg.val, fixed=TRUE )
+      + gwesp( gwesp.val, fixed = TRUE )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      #+ nodeicov( "oldheadscale" )
-      #+ nodeocov( "oldheadscale" )
-      #+ absdiff( "oldheadscale" )
+      + nodeicov( "oldheadscale" )
+      + nodeocov( "oldheadscale" )
+      + absdiff( "oldheadscale" )
       #+ nodeicov( "prismom" )
       #+ nodeocov( "prismom" )
       #+ nodematch( "prismom" )
@@ -101,33 +109,31 @@ net.formula <- function( net ){
 
 ### Unit 2 Model
 
-```{r unit-2-model-chunk, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r unit-2-model, cache=TRUE}
 
 # run the model for unit 2.
-summary( net.formula( u2.net ) )
+summary( net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75 ) )
 
 ```
 
 Here is the ergm for *unit 2*. The main point of interest here is the coefficient for the `sex_minority` variable:
 
-  + The `nodeofactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **send** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.001 level and *positive* indicating that women in the sexual minority are more likely to send friendship ties.  
+  + The `nodeofactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **send** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.01 level and *positive* indicating that women in the sexual minority are more likely to send friendship ties.  
   
-  + There are some additional effects to comment on:
-  
-    + `oldheadscale`-more likely to receive ties, less likely to send ties, no homophily;
-    
-    + `sexacceptance_reverse`-more likely to send ties, less likely to receive ties, no homophily;
+  + `nodeocov.sexacceptance_reverse`-women with more accepting views of sex send more ties.
 
++ `nodeocov.oldheadscale`-old head women are less likely to send ties.
 
+<br>
 
 ----
 
 ### Unit 3 Model
 
-```{r unit-3-model, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r unit-3-model, cache=TRUE}
 
 # run the model for unit 3.
-summary( net.formula( u3.net ) )
+summary( net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00 ) )
 
 ```
 
