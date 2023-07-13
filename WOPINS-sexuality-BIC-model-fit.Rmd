@@ -146,7 +146,7 @@ bic.u3 == min( bic.u3 )
 
 ```
 
-The table shows that the best fitting value for the `gwindegree` term is 1.25 and the `gwesp` term is 1.0.
+The table shows that the best fitting value for the `gwindegree` term is 0.75 and the `gwesp` term is 1.25.
 
 ```{r}
 
@@ -162,6 +162,7 @@ The table shows that the best fitting value for the `gwindegree` term is ??? and
 
 # Power
 
+HERE WITH WORKING THROUGH
 
 ----
 

@@ -87,8 +87,8 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      #+ nodeicov( "healthchangefrom3mopre" )
-      #+ nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
       #+ nodeicov( "MentalPhysicalHealth" )
       #+ nodeocov( "MentalPhysicalHealth" )
       #+ nodeicov( "SocialIntegration" )
@@ -97,8 +97,10 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       #+ nodeocov( "timealone" )
     )
   
-  set.seed( 12345 )
-  net.fit <- ergm( net.formula )
+  net.fit <- ergm( net.formula, 
+                   control = control.ergm(
+                     seed        = 12345,
+                     MCMLE.maxit = 100 ) )
   return( net.fit )
   
 }
