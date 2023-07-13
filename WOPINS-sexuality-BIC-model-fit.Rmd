@@ -52,8 +52,7 @@ This file reports the results for various BIC values for the structural terms.
 ```{r build-functions}
 
 # ----
-# Build the functions.
-
+# Build the function for the separate networks
 eval.bic <- function( net, I, E ){
   model.bics <- matrix( 0, nrow = length( I ), ncol = length( E ) )
   
@@ -64,6 +63,28 @@ eval.bic <- function( net, I, E ){
                      + mutual + twopath 
                      + gwidegree( decay = I[i], fixed = TRUE )
                      + gwesp( E[j], fixed = TRUE ) ) )$bic
+    }
+  }
+  
+  rownames( model.bics ) <- paste("I @", as.character( I ) )
+  colnames( model.bics ) <- paste("E @", as.character( E ) )
+  
+  return( model.bics )
+}
+
+# ----
+# build the function for the pooled networks (this includes the constraint)
+eval.bic.p <- function( net, I, E ){
+  model.bics <- matrix( 0, nrow = length( I ), ncol = length( E ) )
+  
+  for ( i in 1:length( I ) ){
+    for ( j in 1:length( E ) ){
+      model.bics[i,j] <- 
+        summary( ergm( net ~ edges
+                     + mutual + twopath 
+                     + gwidegree( decay = I[i], fixed = TRUE )
+                     + gwesp( E[j], fixed = TRUE ),
+                     constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) ) )$bic
     }
   }
   
@@ -95,7 +116,8 @@ set.seed( 12345 )
 # Estimate the models
 bic.u2   <- eval.bic( u2.net, I, E )
 bic.u3   <- eval.bic( u3.net, I, E )
-bic.pool <- eval.bic( u2.u3.pooled.net, I, E )
+
+bic.pool <- eval.bic.p( u2.u3.pooled.net, I, E )
 
 ```
 

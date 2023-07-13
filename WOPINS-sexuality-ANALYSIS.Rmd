@@ -87,14 +87,14 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
-      + nodeicov( "MentalPhysicalHealth" )
-      + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+      #+ nodeicov( "healthchangefrom3mopre" )
+      #+ nodeocov( "healthchangefrom3mopre" )
+      #+ nodeicov( "MentalPhysicalHealth" )
+      #+ nodeocov( "MentalPhysicalHealth" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
     )
   
   set.seed( 12345 )
@@ -142,7 +142,7 @@ Here is the ergm for *unit 3*. The main point of interest here is the coefficien
 
 ### Pooled Model
 
-```{r pooled-model, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r pooled-model, cache=TRUE}
   
 pooled.formula <- 
     ( u2.u3.pooled.net ~ edges 
@@ -156,9 +156,9 @@ pooled.formula <-
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      #+ nodeicov( "oldheadscale" )
-      #+ nodeocov( "oldheadscale" )
-      #+ absdiff( "oldheadscale" )
+      + nodeicov( "oldheadscale" )
+      + nodeocov( "oldheadscale" )
+      + absdiff( "oldheadscale" )
       #+ nodeicov( "prismom" )
       #+ nodeocov( "prismom" )
       #+ nodematch( "prismom" )
