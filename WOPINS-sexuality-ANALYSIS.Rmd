@@ -87,8 +87,8 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
+      #+ nodeicov( "healthchangefrom3mopre" )
+      #+ nodeocov( "healthchangefrom3mopre" )
       #+ nodeicov( "MentalPhysicalHealth" )
       #+ nodeocov( "MentalPhysicalHealth" )
       #+ nodeicov( "SocialIntegration" )
@@ -139,7 +139,7 @@ summary( net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00 ) )
 
 ```
 
-Here is the ergm for *unit 3*. The main point of interest here is the coefficient for the `sex_minority` variable. Neither coefficient is significant. Although, the coefficients are in the same direction as the models for Unit 2.
+???
 
 
 ### Pooled Model
@@ -150,9 +150,10 @@ pooled.formula <-
     ( u2.u3.pooled.net ~ edges 
       
       # structural terms
-      + mutual 
-      + gwidegree( 0.25, fixed=TRUE )
-      + gwesp( 0.05, fixed = TRUE )
+      + mutual
+      + twopath
+      + gwidegree( 0.75, fixed=TRUE )
+      + gwesp( 1.25, fixed = TRUE )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
@@ -179,14 +180,14 @@ pooled.formula <-
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
-      + nodeicov( "MentalPhysicalHealth" )
-      + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+      #+ nodeicov( "healthchangefrom3mopre" )
+      #+ nodeocov( "healthchangefrom3mopre" )
+      #+ nodeicov( "MentalPhysicalHealth" )
+      #+ nodeocov( "MentalPhysicalHealth" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
     )
   
 set.seed( 12345 )
