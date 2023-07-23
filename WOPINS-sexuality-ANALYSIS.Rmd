@@ -144,7 +144,6 @@ summary( net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00 ) )
 
 ???
 
-
 ### Pooled Model
 
 ```{r pooled-model, cache=TRUE, eval=FALSE}
@@ -183,15 +182,30 @@ pooled.formula <-
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      #+ nodeicov( "healthchangefrom3mopre" )
-      #+ nodeocov( "healthchangefrom3mopre" )
-      #+ nodeicov( "MentalPhysicalHealth" )
-      #+ nodeocov( "MentalPhysicalHealth" )
-      #+ nodeicov( "SocialIntegration" )
-      #+ nodeocov( "SocialIntegration" )
-      #+ nodeicov( "timealone" )
-      #+ nodeocov( "timealone" )
-    )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" )
+      + nodeocov( "MentalPhysicalHealth" )
+      + nodeicov( "SocialIntegration" )
+      + nodeocov( "SocialIntegration" )
+      + nodeicov( "timealone" )
+      + nodeocov( "timealone" )
+      
+      #+ # Terms to test
+      + S(
+        ~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
+        + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
+        + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" ),
+        ~ ( block == 1 ) # this is to test it across the blocks
+        )
+#      + S(
+#        ~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
+#        + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
+#        + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" ),
+#        ~ ( oldheadscale >= 0.3932894 ) # this tests whether these effects differ for those at or above the mean of oldheadsscale
+#        )
+
+)
   
 set.seed( 12345 )
 pooled.fit <- ergm( 
