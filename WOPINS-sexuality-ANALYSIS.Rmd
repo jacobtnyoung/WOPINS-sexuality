@@ -118,13 +118,16 @@ summary( net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75 ) )
 
 ```
 
+UPDATE
+
+
 Here is the ergm for *unit 2*. The main point of interest here is the coefficient for the `sex_minority` variable:
 
   + The `nodeofactor.sex_minority.1` coefficient represents the tendency for sexual minority women (i.e. `sex_minority` equals 1) to **send** ties relative to those who are not in the sexual minority. The coefficient is significant at the 0.01 level and *positive* indicating that women in the sexual minority are more likely to send friendship ties.  
   
   + `nodeocov.sexacceptance_reverse`-women with more accepting views of sex send more ties.
-
-+ `nodeocov.oldheadscale`-old head women are less likely to send ties.
+  
+  + `nodeocov.oldheadscale`-old head women are less likely to send ties.
 
 <br>
 
@@ -144,7 +147,7 @@ summary( net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00 ) )
 
 ### Pooled Model
 
-```{r pooled-model, cache=TRUE}
+```{r pooled-model, cache=TRUE, eval=FALSE}
   
 pooled.formula <- 
     ( u2.u3.pooled.net ~ edges 
@@ -217,6 +220,75 @@ Need to look at the constraints and see if you can get that to work.
 Probably just trim the model down and run that to see if you can get it working first.
 
 Then add everything else.
+
+```{r define-power-model}
+
+
+# build function with formula for ergm
+net.formula <- function( net, gwideg.val, gwesp.val ){
+  net.formula <- 
+    ( net ~ edges 
+      
+      # structural terms
+      + mutual 
+      + twopath
+      + gwidegree( gwideg.val, fixed=TRUE )
+      + gwesp( gwesp.val, fixed = TRUE )
+      
+      # terms of interest
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      + nodeicov( "oldheadscale" )
+      + nodeocov( "oldheadscale" )
+      + absdiff( "oldheadscale" )
+      #+ nodeicov( "prismom" )
+      #+ nodeocov( "prismom" )
+      #+ nodematch( "prismom" )
+      + nodeicov( "sexacceptance_reverse" )
+      + nodeocov( "sexacceptance_reverse" )
+      + absdiff( "sexacceptance_reverse" )
+      
+      #controls
+      #+ nodeicov( "age" )
+      #+ nodeocov( "age" )
+      #+ nodeicov( "grade" )
+      #+ nodeocov( "grade" )
+      #+ nodeicov( "white" )
+      #+ nodeocov( "white" )
+      #+ nodeicov( "unitdays100" )
+      #+ nodeocov( "unitdays100" )
+      #+ nodeicov( "protestantbinary" )
+      #+ nodeocov( "protestantbinary" )
+      #+ nodeicov( "healthchangefrom3mopre" )
+      #+ nodeocov( "healthchangefrom3mopre" )
+      #+ nodeicov( "MentalPhysicalHealth" )
+      #+ nodeocov( "MentalPhysicalHealth" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
+    )
+  
+  net.fit <- ergm( net.formula, 
+                   control = control.ergm(
+                     seed        = 12345,
+                     MCMLE.maxit = 100 ) )
+  return( net.fit )
+  
+}
+
+
+```
+
+
+```{r unit-2p-model, cache=TRUE}
+
+# run the model for unit 3.
+summary( net.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00 ) )
+
+```
+
 
 
 <br>
