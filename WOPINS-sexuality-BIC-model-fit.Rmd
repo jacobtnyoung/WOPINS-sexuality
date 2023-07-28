@@ -125,8 +125,8 @@ Begin with some rough estimates, prior to fine tuning.
 ```{r, echo=TRUE}
 
 # Set the range of values to examine
-I <- seq( 0, 5, by = 0.25 )
-E <- seq( 0, 5, by = 0.25 )
+I <- seq( 0, 5, by = 1 )
+E <- seq( 0, 5, by = 1 )
 
 ```
 
@@ -136,9 +136,9 @@ E <- seq( 0, 5, by = 0.25 )
 set.seed( 12345 )
 
 # Estimate the models
-bic.u2   <- eval.bic( u2.net, I, E, duration = 60*60 )
-bic.u3   <- eval.bic( u3.net, I, E, duration = 60*60 )
-bic.pool <- eval.bic.p( u2.u3.pooled.net, I, E, duration = 60*60 )
+bic.u2   <- eval.bic( u2.net, I, E, duration = 60*5 )
+bic.u3   <- eval.bic( u3.net, I, E, duration = 60*5 )
+bic.pool <- eval.bic.p( u2.u3.pooled.net, I, E, duration = 60*5 )
 
 ```
 
