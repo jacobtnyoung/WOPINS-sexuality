@@ -193,8 +193,8 @@ pooled.formula <-
       
       #+ # Terms to test
       + S(
-        ~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
-        + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
+        #~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
+        ~ nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
         + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" ),
         ~ ( block == 1 ) # this is to test it across the blocks
         )
