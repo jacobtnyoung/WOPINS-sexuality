@@ -106,12 +106,12 @@ eval.bic.p <- function( net, I, E, duration ){
     }
   }
   
-  rownames( model.bics ) <- paste("I @", as.character( I ) )
-  colnames( model.bics ) <- paste("E @", as.character( E ) )
-  
   model.bics[grepl( "Error", model.bics ) == TRUE] <- NA
   
   model.bics <- matrix( as.numeric( model.bics ), ncol = ncol( model.bics ) )
+  
+  rownames( model.bics ) <- paste("I @", as.character( I ) )
+  colnames( model.bics ) <- paste("E @", as.character( E ) )
   
   return( model.bics )
 }
@@ -119,6 +119,8 @@ eval.bic.p <- function( net, I, E, duration ){
 ```
 
 # Friendship
+
+## Rough approximation
 
 Begin with some rough estimates, prior to fine tuning.
 
@@ -130,7 +132,7 @@ E <- seq( 0, 5, by = 1 )
 
 ```
 
-```{r, cache=TRUE}
+```{r, results=FALSE}
 
 # Set the seed to reproduce results.
 set.seed( 12345 )
@@ -144,29 +146,109 @@ bic.pool <- eval.bic.p( u2.u3.pooled.net, I, E, duration = 60*5 )
 
 ```{r}
 
+print( bic.u2 )
+
 bic.u2 == min( bic.u2, na.rm = TRUE )
 
 ```
+
+The first table shows the BICs for the models based on the values for the structural terms.
 
 The table shows that the best fitting value for the `gwindegree` term is 0.75 and the `gwesp` term is `r bic.u2 == min( bic.u2, na.rm = TRUE )`.
 
 ```{r}
 
+bic.u3
+
 bic.u3 == min( bic.u3, na.rm = TRUE )
 
 ```
+
+The first table shows the BICs for the models based on the values for the structural terms.
 
 The table shows that the best fitting value for the `gwindegree` term is 0.75 and the `gwesp` term is `r bic.u3 == min( bic.u3, na.rm = TRUE )`.
 
 ```{r}
 
+bic.pool
+
 bic.pool == min( bic.pool, na.rm = TRUE )
 
 ```
 
+The first table shows the BICs for the models based on the values for the structural terms.
+
 The table shows that the best fitting value for the `gwindegree` term is ??? and the `gwesp` term is `r bic.pool == min( bic.pool, na.rm = TRUE )`..
 
 <br>
+
+
+## Fine-tuning approximation
+
+Use the information from the previous results to narrow the range of values.
+
+```{r, echo=TRUE}
+
+# Set the range of values to examine
+I <- seq( 0, 5, by = 1 )
+E <- seq( 0, 5, by = 1 )
+
+```
+
+```{r, results=FALSE}
+
+# Set the seed to reproduce results.
+set.seed( 12345 )
+
+# Estimate the models
+bic.u2   <- eval.bic( u2.net, seq( 0, 5, by = 1 ), seq( 0, 5, by = 1 ), duration = 60*5 )
+
+!!!here with updating this: need to pull the values
+
+bic.u3   <- eval.bic( u3.net, I, E, duration = 60*5 )
+bic.pool <- eval.bic.p( u2.u3.pooled.net, I, E, duration = 60*5 )
+
+```
+
+```{r}
+
+print( bic.u2 )
+
+bic.u2 == min( bic.u2, na.rm = TRUE )
+
+```
+
+The first table shows the BICs for the models based on the values for the structural terms.
+
+The table shows that the best fitting value for the `gwindegree` term is 0.75 and the `gwesp` term is `r bic.u2 == min( bic.u2, na.rm = TRUE )`.
+
+```{r}
+
+bic.u3
+
+bic.u3 == min( bic.u3, na.rm = TRUE )
+
+```
+
+The first table shows the BICs for the models based on the values for the structural terms.
+
+The table shows that the best fitting value for the `gwindegree` term is 0.75 and the `gwesp` term is `r bic.u3 == min( bic.u3, na.rm = TRUE )`.
+
+```{r}
+
+bic.pool
+
+bic.pool == min( bic.pool, na.rm = TRUE )
+
+```
+
+The first table shows the BICs for the models based on the values for the structural terms.
+
+The table shows that the best fitting value for the `gwindegree` term is ??? and the `gwesp` term is `r bic.pool == min( bic.pool, na.rm = TRUE )`..
+
+<br>
+
+
 
 ----
 
