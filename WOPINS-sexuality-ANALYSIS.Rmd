@@ -66,12 +66,12 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeicov( "oldheadscale" )
-      + nodeocov( "oldheadscale" )
-      + absdiff( "oldheadscale" )
-      #+ nodeicov( "prismom" )
-      #+ nodeocov( "prismom" )
-      #+ nodematch( "prismom" )
+      #+ nodeicov( "oldheadscale" )
+      #+ nodeocov( "oldheadscale" )
+      #+ absdiff( "oldheadscale" )
+      + nodeicov( "prismom" )
+      + nodeocov( "prismom" )
+      + nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
@@ -87,19 +87,19 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeocov( "unitdays100" )
       + nodeicov( "protestantbinary" )
       + nodeocov( "protestantbinary" )
-      #+ nodeicov( "healthchangefrom3mopre" )
-      #+ nodeocov( "healthchangefrom3mopre" )
-      #+ nodeicov( "MentalPhysicalHealth" )
-      #+ nodeocov( "MentalPhysicalHealth" )
-      #+ nodeicov( "SocialIntegration" )
-      #+ nodeocov( "SocialIntegration" )
-      #+ nodeicov( "timealone" )
-      #+ nodeocov( "timealone" )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" )
+      + nodeocov( "MentalPhysicalHealth" )
+      + nodeicov( "SocialIntegration" )
+      + nodeocov( "SocialIntegration" )
+      + nodeicov( "timealone" )
+      + nodeocov( "timealone" )
     )
   
   net.fit <- ergm( net.terms, 
                    control = control.ergm(
-                     seed        = 12345,
+                     seed        = 601601,
                      MCMLE.maxit = 100 ) )
   return( net.fit )
   
@@ -161,12 +161,12 @@ pooled.formula <-
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeicov( "oldheadscale" )
-      + nodeocov( "oldheadscale" )
-      + absdiff( "oldheadscale" )
-      #+ nodeicov( "prismom" )
-      #+ nodeocov( "prismom" )
-      #+ nodematch( "prismom" )
+      #+ nodeicov( "oldheadscale" )
+      #+ nodeocov( "oldheadscale" )
+      #+ absdiff( "oldheadscale" )
+      + nodeicov( "prismom" )
+      + nodeocov( "prismom" )
+      + nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
@@ -192,12 +192,12 @@ pooled.formula <-
       + nodeocov( "timealone" )
       
       #+ # Terms to test
-      + S(
-        #~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
-        ~ nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
-        + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" ),
-        ~ ( block == 1 ) # this is to test it across the blocks
-        )
+      #+ S(
+     #   #~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
+     #   ~ nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
+     #   + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" ),
+     #   ~ ( block == 1 ) # this is to test it across the blocks
+     #   )
 #      + S(
 #        ~ edges + mutual + twopath + gwidegree( 0.75, fixed=TRUE ) + gwesp( 1.25, fixed = TRUE )
 #        + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
