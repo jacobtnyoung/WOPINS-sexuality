@@ -16,10 +16,12 @@ body {
 text-align: justify}
 </style>
 
-```{r}
+```{r, echo=FALSE}
 
 # set the defaults for the codechunks
-knitr::opts_chunk$set( eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE )
+knitr::opts_chunk$set( 
+  eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE 
+  )
 
 ```
 
@@ -38,7 +40,7 @@ library( network ) # for creating the network object
 library( sna ) # for working with the network
 library( ergm ) # for erg models
 library( pander ) # for tables
-
+library( stargazer ) # for nice html tables
 
 # run the script to create the networks with the attributes
 source( here( "WOPINS-sexuality-BUILD.R" ) )
@@ -52,7 +54,7 @@ source( here( "WOPINS-sexuality-BUILD.R" ) )
 # ERGMs
 
 # build function with formula for ergm
-net.formula <- function( net, gwideg.val, gwesp.val ){
+net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
   net.terms <- 
     ( net ~ edges 
       
@@ -66,8 +68,8 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeicov( "prismom" )
-      + nodeocov( "prismom" )
+      + nodeifactor( "prismom" )
+      + nodeofactor( "prismom" )
       + nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
@@ -96,7 +98,7 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
   
   net.fit <- ergm( net.terms, 
                    control = control.ergm(
-                     seed        = 601601,
+                     seed        = seed.num,
                      MCMLE.maxit = 1000 ) )
   return( net.fit )
   
@@ -110,86 +112,50 @@ net.formula <- function( net, gwideg.val, gwesp.val ){
 
 ```{r unit-2-f-model}
 
-# estimate the model
-u2.model <- net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75 )
+# estimate the model ----
+u2.model <- net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
 
 # run the model for unit 2
 summary( u2.model )
 
 ```
 
-----
+#### Interpretation
+
+  + A positive `nodeofactor.sex_minority.1` term indicates that sexual minority women are more likely to send friendship ties
+  
+  + A negative `nodeofactor.prismom` term indicates that prison mom's are less likely to send a friendship tie
+
+  + A positive `nodeocov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are more likely to send a friendship tie
+
+<br>
+
+<hr>
+
+<br>
 
 ### Unit 3 Model
 
 ```{r unit-3-f-model}
 
-# estimate the model
-u3.model <- net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00 )
+# estimate the model ----
+u3.model <- net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 1234567 )
 
 # run the model for unit 3
 summary( u3.model )
 
 ```
 
+#### Interpretation
 
-### Pooled Model
+No significant effects for the *sexual minority*, *prison mom*, or *acceptance of sexual orientation* variables.
 
-```{r pooled-f-model}
-  
-pooled.formula <- 
-    ( u2.u3.pooled.net ~ edges 
-      
-      # structural terms
-      + mutual
-      + twopath
-      + gwidegree( 0.75, fixed=TRUE )
-      + gwesp( 1.25, fixed = TRUE )
-      
-      # terms of interest
-      + nodeifactor( "sex_minority" )
-      + nodeofactor( "sex_minority" )
-      + nodematch( "sex_minority" )
-      + nodeicov( "prismom" )
-      + nodeocov( "prismom" )
-      + nodematch( "prismom" )
-      + nodeicov( "sexacceptance_reverse" )
-      + nodeocov( "sexacceptance_reverse" )
-      + absdiff( "sexacceptance_reverse" )
-      
-      #controls
-      + nodeicov( "age" )
-      + nodeocov( "age" )
-      + nodeicov( "grade" )
-      + nodeocov( "grade" )
-      + nodeicov( "white" )
-      + nodeocov( "white" )
-      + nodeicov( "unitdays100" )
-      + nodeocov( "unitdays100" )
-      + nodeicov( "protestantbinary" )
-      + nodeocov( "protestantbinary" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
-      + nodeicov( "MentalPhysicalHealth" )
-      + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+<br>
 
-)
-  
-set.seed( 601601 )
-pooled.fit <- ergm( 
-  pooled.formula, 
-  constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) 
-  )
+<hr>
 
-summary( pooled.fit )
-
-```
-
-----
+<br>
+<br>
 
 ## Models of Power/Influence
 
@@ -197,34 +163,64 @@ summary( pooled.fit )
 
 ```{r unit-2-p-model}
 
-# estimate the model
-u2.p.model <- net.formula( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75 )
+# estimate the model ----
+u2.p.model <- net.formula( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
 
 # run the model for unit 2
 summary( u2.p.model )
 
 ```
 
-----
+#### Interpretation
+
+  + A negative `nodeicov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are less likely to receive power/influence ties; or, put differently: women who are less accepting of sexual orientation are more likely to receive power/influence ties.
+
+<br>
+
+<hr>
+
+<br>
+
+
+#### Test Marginal Effect
+
+```{r unit-2-p-model-marginal }
+
+library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
+
+accept.ame  <- ergm.AME(u2.p.model, var1 = "nodeicov.sexacceptance_reverse")
+
+accept.ame
+
+```
 
 ### Unit 3 Model
 
 ```{r unit-3-p-model}
 
-# estimate the model
-u3.p.model <- net.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00 )
+# estimate the model ----
+u3.p.model <- net.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 1234567 )
 
 # run the model for unit 3
 summary( u3.p.model )
 
 ```
 
+#### Interpretation
 
+  + A negative `absdiff.sexacceptance_reverse` term indicates that women who are more similar in terms of their attitudes of sexual orientation more likely to send power/influence ties to each other.
+
+<br>
+
+<hr>
+
+<br>
 
 ### Pooled Model
 
 ```{r pooled-p-model}
-  
+
+# pooled model ----  
 pooled.formula <- 
     ( u2.u3.p.pooled.net ~ edges 
       
@@ -288,6 +284,13 @@ summary( pooled.p.fit )
 
 ```
 
+#### Interpretation
+
+  + ???.
+
+<br>
+
+<hr>
 
 <br>
 <br>
