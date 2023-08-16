@@ -163,8 +163,59 @@ No significant effects for the *sexual minority*, *prison mom*, or *acceptance o
 
 ```{r unit-2-p-model}
 
+# build function with formula for ergm ----
+net.formula2 <- function( net, gwideg.val, gwesp.val, seed.num ){
+  net.terms <- 
+    ( net ~ edges 
+      
+      # structural terms
+      #+ mutual 
+      + twopath
+      + gwidegree( gwideg.val, fixed=TRUE )
+      + gwesp( gwesp.val, fixed = TRUE )
+      
+      # terms of interest
+      + nodeifactor( "sex_minority" )
+      + nodeofactor( "sex_minority" )
+      + nodematch( "sex_minority" )
+      + nodeifactor( "prismom" )
+      + nodeofactor( "prismom" )
+      + nodematch( "prismom" )
+      + nodeicov( "sexacceptance_reverse" )
+      + nodeocov( "sexacceptance_reverse" )
+      + absdiff( "sexacceptance_reverse" )
+      
+      #controls
+      + nodeicov( "age" )
+      + nodeocov( "age" )
+      + nodeicov( "grade" )
+      + nodeocov( "grade" )
+      + nodeicov( "white" )
+      + nodeocov( "white" )
+      + nodeicov( "unitdays100" )
+      + nodeocov( "unitdays100" )
+      + nodeicov( "protestantbinary" )
+      + nodeocov( "protestantbinary" )
+      + nodeicov( "healthchangefrom3mopre" )
+      + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" )
+      + nodeocov( "MentalPhysicalHealth" )
+      + nodeicov( "SocialIntegration" )
+      + nodeocov( "SocialIntegration" )
+      + nodeicov( "timealone" )
+      + nodeocov( "timealone" )
+    )
+  
+  net.fit <- ergm( net.terms, 
+                   control = control.ergm(
+                     seed        = seed.num,
+                     MCMLE.maxit = 1000 ) )
+  return( net.fit )
+  
+}
+
 # estimate the model ----
-u2.p.model <- net.formula( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
+u2.p.model <- net.formula2( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
 
 # run the model for unit 2
 summary( u2.p.model )
@@ -184,7 +235,7 @@ summary( u2.p.model )
 
 #### Test Marginal Effect
 
-```{r unit-2-p-model-marginal }
+```{r unit-2-p-model-marginal, eval= FALSE}
 
 library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
@@ -258,8 +309,8 @@ pooled.formula <-
       + nodeocov( "MentalPhysicalHealth" )
       + nodeicov( "SocialIntegration" )
       + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
       
       # Terms to test
       + S(
@@ -286,7 +337,7 @@ summary( pooled.p.fit )
 
 #### Interpretation
 
-  + ???.
+  + The negative coefficient for the `S((block==1))~nodeicov.sexacceptance_reverse` term indicates that women on the good behavior unit are more likely to receive power/influence ties if they have less accepting attitudes toward sex. This term is restricting the model to just that unit. This shows that there is a difference across these units in terms of this effect. 
 
 <br>
 
