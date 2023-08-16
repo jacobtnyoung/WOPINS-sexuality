@@ -116,7 +116,13 @@ net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
 u2.model <- net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
 
 # run the model for unit 2
-summary( u2.model )
+#summary( u2.model )
+
+# nice table
+stargazer( u2.model, 
+           coef= list( coef( u2.model ) ),
+           se= list( sqrt( diag( u2.model$covar ) ) ),
+           type = "text" )
 
 ```
 
@@ -142,7 +148,14 @@ summary( u2.model )
 u3.model <- net.formula( u3.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 1234567 )
 
 # run the model for unit 3
-summary( u3.model )
+#summary( u3.model )
+
+# nice table
+stargazer( u3.model, 
+           coef= list( coef( u3.model ) ),
+           se= list( sqrt( diag( u3.model$covar ) ) ),
+           type = "text" )
+
 
 ```
 
@@ -218,7 +231,12 @@ net.formula2 <- function( net, gwideg.val, gwesp.val, seed.num ){
 u2.p.model <- net.formula2( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
 
 # run the model for unit 2
-summary( u2.p.model )
+#summary( u2.p.model )
+
+stargazer( u2.p.model, 
+           coef= list( coef( u2.p.model ) ),
+           se= list( sqrt( diag( u2.p.model$covar ) ) ),
+           type = "text" )
 
 ```
 
@@ -253,7 +271,12 @@ accept.ame
 u3.p.model <- net.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 1234567 )
 
 # run the model for unit 3
-summary( u3.p.model )
+#summary( u3.p.model )
+
+stargazer( u3.p.model, 
+           coef= list( coef( u3.p.model ) ),
+           se= list( sqrt( diag( u3.p.model$covar ) ) ),
+           type = "text" )
 
 ```
 
@@ -331,7 +354,12 @@ pooled.p.fit <- ergm(
   constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) 
   )
 
-summary( pooled.p.fit )
+#summary( pooled.p.fit )
+
+stargazer( u2.u3.p.pooled.net, 
+           coef= list( coef( u2.u3.p.pooled.net ) ),
+           se= list( sqrt( diag( u2.u3.p.pooled.net$covar ) ) ),
+           type = "text" )
 
 ```
 
