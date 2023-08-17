@@ -255,6 +255,8 @@ stargazer( u2.p.model,
 
 ```{r unit-2-p-model-marginal, eval= FALSE}
 
+#!!!YOU NEED TO RERUN THIS BECAUSE OF THE FUNCTION, IT IS CAUSING PROBLEMS
+
 library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
 accept.ame  <- ergm.AME(u2.p.model, var1 = "nodeicov.sexacceptance_reverse")
@@ -354,12 +356,12 @@ pooled.p.fit <- ergm(
   constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) 
   )
 
-#summary( pooled.p.fit )
+summary( pooled.p.fit )
 
-stargazer( u2.u3.p.pooled.net, 
-           coef= list( coef( u2.u3.p.pooled.net ) ),
-           se= list( sqrt( diag( u2.u3.p.pooled.net$covar ) ) ),
-           type = "text" )
+#stargazer( u2.u3.p.pooled.net, 
+#           coef= list( coef( u2.u3.p.pooled.net ) ),
+#           se= list( sqrt( diag( u2.u3.p.pooled.net$covar ) ) ),
+#           type = "text" )
 
 ```
 
