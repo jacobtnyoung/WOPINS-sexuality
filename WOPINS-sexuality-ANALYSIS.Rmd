@@ -90,10 +90,10 @@ net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
       + nodeocov( "healthchangefrom3mopre" )
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
     )
   
   net.fit <- ergm( net.terms, 
@@ -213,10 +213,10 @@ net.formula2 <- function( net, gwideg.val, gwesp.val, seed.num ){
       + nodeocov( "healthchangefrom3mopre" )
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
-      + nodeicov( "timealone" )
-      + nodeocov( "timealone" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
+      #+ nodeicov( "timealone" )
+      #+ nodeocov( "timealone" )
     )
   
   net.fit <- ergm( net.terms, 
@@ -253,17 +253,39 @@ stargazer( u2.p.model,
 
 #### Test Marginal Effect
 
-```{r unit-2-p-model-marginal, eval= FALSE}
+```{r unit-2-p-model-ame-setup, eval=TRUE, echo=FALSE}
 
-#!!!YOU NEED TO RERUN THIS BECAUSE OF THE FUNCTION, IT IS CAUSING PROBLEMS
+u2.p.model2 <- ergm( u2.p.net ~ edges 
+      + twopath + gwidegree( 1.50, fixed=TRUE ) + gwesp( 0.75, fixed = TRUE )
+      + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
+      + nodeifactor( "prismom" ) + nodeofactor( "prismom" ) + nodematch( "prismom" )
+      + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" )
+      + nodeicov( "age" ) + nodeocov( "age" ) 
+      + nodeicov( "grade" ) + nodeocov( "grade" )
+      + nodeicov( "white" ) + nodeocov( "white" )
+      + nodeicov( "unitdays100" ) + nodeocov( "unitdays100" )
+      + nodeicov( "protestantbinary" ) + nodeocov( "protestantbinary" )
+      + nodeicov( "healthchangefrom3mopre" ) + nodeocov( "healthchangefrom3mopre" )
+      + nodeicov( "MentalPhysicalHealth" ) + nodeocov( "MentalPhysicalHealth" ), 
+      control = control.ergm( seed = 1234567, MCMLE.maxit = 1000 ) 
+      )
+
+```
+
+```{r unit-2-p-model-marginal, echo=TRUE}
 
 library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
-accept.ame  <- ergm.AME(u2.p.model, var1 = "nodeicov.sexacceptance_reverse")
+accept.ame  <- ergm.AME( u2.p.model2, var1 = "nodeicov.sexacceptance_reverse" )
 
 accept.ame
 
 ```
+
+The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`.
+
+<br>
+
 
 ### Unit 3 Model
 
@@ -332,8 +354,8 @@ pooled.formula <-
       + nodeocov( "healthchangefrom3mopre" )
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
-      + nodeicov( "SocialIntegration" )
-      + nodeocov( "SocialIntegration" )
+      #+ nodeicov( "SocialIntegration" )
+      #+ nodeocov( "SocialIntegration" )
       #+ nodeicov( "timealone" )
       #+ nodeocov( "timealone" )
       
@@ -357,11 +379,6 @@ pooled.p.fit <- ergm(
   )
 
 summary( pooled.p.fit )
-
-#stargazer( u2.u3.p.pooled.net, 
-#           coef= list( coef( u2.u3.p.pooled.net ) ),
-#           se= list( sqrt( diag( u2.u3.p.pooled.net$covar ) ) ),
-#           type = "text" )
 
 ```
 
