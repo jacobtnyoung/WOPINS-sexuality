@@ -89,6 +89,14 @@ for( i in 1: length( names.loop ) ){
 
 
 # ----------
+# create the logged age variable
+u2.net %v% "lage"   <- log( u2.net %v% "age" )
+u3.net %v% "lage"   <- log( u3.net %v% "age" )
+u2.p.net %v% "lage" <- log( u2.p.net %v% "age" )
+u3.p.net %v% "lage" <- log( u3.p.net %v% "age" )
+
+
+# ----------
 # build the block network
 
 u2.u3.net.list <- list( u2.net, u3.net )

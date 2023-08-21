@@ -20,7 +20,7 @@ text-align: justify}
 
 # set the defaults for the codechunks
 knitr::opts_chunk$set( 
-  eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE 
+  eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE 
   )
 
 ```
@@ -68,16 +68,16 @@ net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeifactor( "prismom" )
-      + nodeofactor( "prismom" )
-      + nodematch( "prismom" )
+      #+ nodeifactor( "prismom" )
+      #+ nodeofactor( "prismom" )
+      #+ nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
       
       #controls
-      + nodeicov( "age" )
-      + nodeocov( "age" )
+      + nodeicov( "lage" )
+      + nodeocov( "lage" )
       + nodeicov( "grade" )
       + nodeocov( "grade" )
       + nodeicov( "white" )
@@ -191,16 +191,16 @@ net.formula2 <- function( net, gwideg.val, gwesp.val, seed.num ){
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeifactor( "prismom" )
-      + nodeofactor( "prismom" )
-      + nodematch( "prismom" )
+      #+ nodeifactor( "prismom" )
+      #+ nodeofactor( "prismom" )
+      #+ nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
       
       #controls
-      + nodeicov( "age" )
-      + nodeocov( "age" )
+      + nodeicov( "lage" )
+      + nodeocov( "lage" )
       + nodeicov( "grade" )
       + nodeocov( "grade" )
       + nodeicov( "white" )
@@ -258,9 +258,9 @@ stargazer( u2.p.model,
 u2.p.model2 <- ergm( u2.p.net ~ edges 
       + twopath + gwidegree( 1.50, fixed=TRUE ) + gwesp( 0.75, fixed = TRUE )
       + nodeifactor( "sex_minority" ) + nodeofactor( "sex_minority" ) + nodematch( "sex_minority" )
-      + nodeifactor( "prismom" ) + nodeofactor( "prismom" ) + nodematch( "prismom" )
+      #+ nodeifactor( "prismom" ) + nodeofactor( "prismom" ) + nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" ) + nodeocov( "sexacceptance_reverse" ) + absdiff( "sexacceptance_reverse" )
-      + nodeicov( "age" ) + nodeocov( "age" ) 
+      + nodeicov( "lage" ) + nodeocov( "lage" ) 
       + nodeicov( "grade" ) + nodeocov( "grade" )
       + nodeicov( "white" ) + nodeocov( "white" )
       + nodeicov( "unitdays100" ) + nodeocov( "unitdays100" )
@@ -272,7 +272,7 @@ u2.p.model2 <- ergm( u2.p.net ~ edges
 
 ```
 
-```{r unit-2-p-model-marginal, echo=TRUE}
+```{r unit-2-p-model-marginal, echo=FALSE, results=TRUE}
 
 library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
@@ -332,16 +332,16 @@ pooled.formula <-
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
-      + nodeicov( "prismom" )
-      + nodeocov( "prismom" )
-      + nodematch( "prismom" )
+      #+ nodeicov( "prismom" )
+      #+ nodeocov( "prismom" )
+      #+ nodematch( "prismom" )
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
       
       #controls
-      + nodeicov( "age" )
-      + nodeocov( "age" )
+      + nodeicov( "lage" )
+      + nodeocov( "lage" )
       + nodeicov( "grade" )
       + nodeocov( "grade" )
       + nodeicov( "white" )
