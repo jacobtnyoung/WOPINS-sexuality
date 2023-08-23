@@ -45,7 +45,6 @@ library( stargazer ) # for nice html tables
 # run the script to create the networks with the attributes
 source( here( "WOPINS-sexuality-BUILD.R" ) )
 
-
 ```
 
 ```{r define-friend-model}
@@ -54,7 +53,7 @@ source( here( "WOPINS-sexuality-BUILD.R" ) )
 # ERGMs
 
 # build function with formula for ergm
-net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
+net.f.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
   net.terms <- 
     ( net ~ edges 
       
@@ -114,20 +113,14 @@ net.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
 ```{r unit-2-f-model}
 
 # estimate the model ----
-u2.model <- net.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
-
-# run the model for unit 2
-#summary( u2.model )
+u2.model <- net.f.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
 
 ```
 
 ```{r unit-3-f-model}
 
 # estimate the model ----
-u3.model <- net.formula( u3.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
-
-# run the model for unit 3
-#summary( u3.model )
+u3.model <- net.f.formula( u3.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
 
 ```
 
@@ -153,7 +146,7 @@ stargazer( u2.model, u3.model,
   
   + A negative `nodeofactor.prismom` term indicates that prison mom's are less likely to send a friendship tie
 
-  + A positive `nodeocov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are more likely to send a friendship tie
+  + A positive `nodeocov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are more likely to send a friendship tie (*check significance level)
 
 <br>
 
@@ -167,79 +160,10 @@ No significant effects for the *sexual minority*, *prison mom*, or *acceptance o
 
 ## Models of Power/Influence
 
-```{r unit-2-p-model}
+```{r define-power-model}
 
 # build function with formula for ergm ----
-net.formula2 <- function( net, gwideg.val, gwesp.val, seed.num ){
-  net.terms <- 
-    ( net ~ edges 
-      
-      # structural terms
-      #+ mutual 
-      + twopath
-      + gwidegree( gwideg.val, fixed=TRUE )
-      + gwesp( gwesp.val, fixed = TRUE )
-      
-      # terms of interest
-      + nodeifactor( "sex_minority" )
-      + nodeofactor( "sex_minority" )
-      + nodematch( "sex_minority" )
-      #+ nodeifactor( "prismom" )
-      #+ nodeofactor( "prismom" )
-      #+ nodematch( "prismom" )
-      + nodeicov( "sexacceptance_reverse" )
-      + nodeocov( "sexacceptance_reverse" )
-      + absdiff( "sexacceptance_reverse" )
-      
-      # controls
-      + nodeicov( "lage" )
-      + nodeocov( "lage" )
-      + absdiff( "lage" )
-      + nodeicov( "grade" )
-      + nodeocov( "grade" )
-      + absdiff( "grade" )
-      + nodeifactor( "white" )
-      + nodeofactor( "white" )
-      + nodematch( "white" )
-      + nodeicov( "unitdays100" )
-      + nodeocov( "unitdays100" )
-      + absdiff( "unitdays100" )
-      + nodeifactor( "protestantbinary" )
-      + nodeofactor( "protestantbinary" )
-      + nodematch( "protestantbinary" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
-      + absdiff( "healthchangefrom3mopre" )
-      + nodeicov( "MentalPhysicalHealth" )
-      + nodeocov( "MentalPhysicalHealth" )
-      + absdiff( "MentalPhysicalHealth" )
-    )
-  
-  net.fit <- ergm( net.terms, 
-                   control = control.ergm(
-                     seed        = seed.num,
-                     MCMLE.maxit = 1000 ) )
-  return( net.fit )
-  
-}
-
-# estimate the model ----
-u2.p.model <- net.formula2( u2.p.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 1234567 )
-
-# run the model for unit 2
-#summary( u2.p.model )
-
-stargazer( u2.p.model, 
-           coef= list( coef( u2.p.model ) ),
-           se= list( sqrt( diag( u2.p.model$covar ) ) ),
-           type = "text" )
-
-```
-
-```{r unit-3-p-terms}
-
-# build function with formula for ergm ----
-net.formula3 <- function( net, gwideg.val, gwesp.val, seed.num ){
+net.p.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
   net.terms <- 
     ( net ~ edges 
       
@@ -294,10 +218,17 @@ net.formula3 <- function( net, gwideg.val, gwesp.val, seed.num ){
 
 ```
 
+```{r unit-2-p-model}
+
+# estimate the model ----
+u2.p.model <- net.p.formula( u2.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 6016016 )
+
+```
+
 ```{r unit-3-p-model}
 
 # estimate the model ----
-u3.p.model <- net.formula3( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 6016016 )
+u3.p.model <- net.p.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 6016016 )
 
 ```
 
@@ -323,10 +254,10 @@ stargazer( u2.p.model, u3.p.model,
 
 ##### Test Marginal Effect for Unit 2
 
-```{r unit-2-p-model-ame-setup, eval=TRUE, echo=FALSE}
+```{r unit-2-p-model-ame-setup, warning=FALSE }
 
 u2.p.model2 <- ergm( u2.p.net ~ edges 
-      + twopath + gwidegree( 1.50, fixed=TRUE ) + gwesp( 0.75, fixed = TRUE )
+      + twopath + gwidegree( 1.25, fixed=TRUE ) + gwesp( 1.00, fixed = TRUE )
 
       # terms of interest
       + nodeifactor( "sex_minority" )
@@ -361,12 +292,12 @@ u2.p.model2 <- ergm( u2.p.net ~ edges
       + nodeicov( "MentalPhysicalHealth" )
       + nodeocov( "MentalPhysicalHealth" )
       + absdiff( "MentalPhysicalHealth" ) , 
-      control = control.ergm( seed = 1234567, MCMLE.maxit = 1000 ) 
+      control = control.ergm( seed = 6016016, MCMLE.maxit = 1000 ) 
       )
 
 ```
 
-```{r unit-2-p-model-marginal, echo=FALSE, results=TRUE}
+```{r unit-2-p-model-marginal, results=FALSE}
 
 library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
@@ -390,7 +321,7 @@ The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r r
 
 ### Pooled Model
 
-```{r pooled-p-model}
+```{r pooled-p-model, eval=FALSE}
 
 # pooled model ----  
 pooled.formula <- 
@@ -399,8 +330,8 @@ pooled.formula <-
       # structural terms
       + mutual
       + twopath
-      + gwidegree( 0.75, fixed=TRUE )
-      + gwesp( 1.25, fixed = TRUE )
+      + gwidegree( 1.25, fixed=TRUE )
+      + gwesp( 1.00, fixed = TRUE )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
