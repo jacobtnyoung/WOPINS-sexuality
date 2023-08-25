@@ -134,7 +134,7 @@ stargazer( u2.model, u3.model,
            dep.var.labels.include = FALSE,
            coef= list( coef( u2.model ), coef( u3.model ) ),
            se= list( sqrt( diag( u2.model$covar ) ), sqrt( diag( u3.model$covar ) ) ),
-           type = "html" )
+           type = "text" )
 
 ```
 
@@ -245,7 +245,7 @@ stargazer( u2.p.model, u3.p.model,
            dep.var.labels.include = FALSE,
            coef= list( coef( u2.p.model ), coef( u3.p.model ) ),
            se= list( sqrt( diag( u2.p.model$covar ) ), sqrt( diag( u3.p.model$covar ) ) ),
-           type = "html" )
+           type = "text" )
 
 ```
 
@@ -311,7 +311,7 @@ accept.ame
 
 ```
 
-The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`.
+The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`. The value of `r round( accept.ame[1],4 )` indicates that the probability of a tie increases by `r round( accept.ame[1],4 )` percent for a 1 unit change in `sexacceptance_reverse`.
 
 <br>
 
@@ -325,7 +325,7 @@ The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r r
 
 ### Pooled Model
 
-```{r pooled-p-model, eval=FALSE}
+```{r pooled-p-model, eval=TRUE}
 
 # pooled model ----  
 pooled.formula <- 
@@ -338,7 +338,7 @@ pooled.formula <-
       + gwesp( 0.75, fixed = TRUE )
       
       # friendship network
-      edgecov( u2.u3.pooled.net )
+      + edgecov( u2.u3.pooled.net )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
@@ -395,6 +395,17 @@ pooled.p.fit <- ergm(
 
 summary( pooled.p.fit )
 
+#stargazer( u2.p.model, u3.p.model, pooled.p.fit,
+#           title = "ERGMs for Power/Influence",
+#           dep.var.caption = "",
+#           dep.var.labels = "",
+#           column.labels = c( "Unit 2", "Unit 3", "Pooled" ),
+#           dep.var.labels.include = FALSE,
+#           coef= list( coef( u2.p.model ), coef( u3.p.model ), coef( pooled.p.fit ) ),
+#           se= list( sqrt( diag( u2.p.model$covar ) ), sqrt( diag( u3.p.model$covar ) ), sqrt( diag( pooled.p.fit$covar ) ) ),
+#           type = "text" )
+
+
 ```
 
 #### Interpretation
@@ -405,4 +416,4 @@ summary( pooled.p.fit )
 <hr>
 <br>
 
-###### ***Last updated `r format(Sys.time(), '%d %B, %Y')`***
+###### ***Last updated `r format( Sys.time(), '%d %B, %Y' )`***
