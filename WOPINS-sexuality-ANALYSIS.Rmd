@@ -163,7 +163,7 @@ No significant effects for the *sexual minority*, *prison mom*, or *acceptance o
 ```{r define-power-model}
 
 # build function with formula for ergm ----
-net.p.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
+net.p.formula <- function( net, f.net, gwideg.val, gwesp.val, seed.num ){
   net.terms <- 
     ( net ~ edges 
       
@@ -172,6 +172,9 @@ net.p.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
       + twopath
       + gwidegree( gwideg.val, fixed=TRUE )
       + gwesp( gwesp.val, fixed = TRUE )
+      
+      # friendship term
+      + edgecov( f.net )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
@@ -221,14 +224,14 @@ net.p.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
 ```{r unit-2-p-model}
 
 # estimate the model ----
-u2.p.model <- net.p.formula( u2.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 6016016 )
+u2.p.model <- net.p.formula( u2.p.net, u2.net, gwideg.val = 1.25, gwesp.val = 0.75, seed.num = 6016016 )
 
 ```
 
 ```{r unit-3-p-model}
 
 # estimate the model ----
-u3.p.model <- net.p.formula( u3.p.net, gwideg.val = 1.25, gwesp.val = 1.00, seed.num = 6016016 )
+u3.p.model <- net.p.formula( u3.p.net, u3.net, gwideg.val = 1.25, gwesp.val = 0.75, seed.num = 6016016 )
 
 ```
 
@@ -257,9 +260,11 @@ stargazer( u2.p.model, u3.p.model,
 ```{r unit-2-p-model-ame-setup, warning=FALSE }
 
 u2.p.model2 <- ergm( u2.p.net ~ edges 
-      + twopath + gwidegree( 1.25, fixed=TRUE ) + gwesp( 1.00, fixed = TRUE )
-
-      # terms of interest
+      + mutual
+      + twopath 
+      + gwidegree( 1.25, fixed=TRUE ) 
+      + gwesp( 0.75, fixed = TRUE )
+      + edgecov( u3.net )
       + nodeifactor( "sex_minority" )
       + nodeofactor( "sex_minority" )
       + nodematch( "sex_minority" )
@@ -269,8 +274,6 @@ u2.p.model2 <- ergm( u2.p.net ~ edges
       + nodeicov( "sexacceptance_reverse" )
       + nodeocov( "sexacceptance_reverse" )
       + absdiff( "sexacceptance_reverse" )
-      
-      # controls
       + nodeicov( "lage" )
       + nodeocov( "lage" )
       + absdiff( "lage" )
@@ -331,7 +334,7 @@ pooled.formula <-
       + mutual
       + twopath
       + gwidegree( 1.25, fixed=TRUE )
-      + gwesp( 1.00, fixed = TRUE )
+      + gwesp( 0.75, fixed = TRUE )
       
       # terms of interest
       + nodeifactor( "sex_minority" )
