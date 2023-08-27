@@ -255,6 +255,8 @@ stargazer( u2.p.model, u3.p.model,
 
   + A negative `nodeicov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are less likely to receive power/influence ties; or, put differently: women who are less accepting of sexual orientation are more likely to receive power/influence ties.
 
+<br>
+
 ##### Test Marginal Effect for Unit 2
 
 ```{r unit-2-p-model-ame-setup, warning=FALSE }
@@ -311,7 +313,7 @@ accept.ame
 
 ```
 
-The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`. The value of `r round( accept.ame[1],4 )` indicates that the probability of a tie increases by `r round( accept.ame[1],4 )` percent for a 1 unit change in `sexacceptance_reverse`.
+The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`. The value of `r round( accept.ame[1],4 )` indicates that the probability of a tie increases by `r round( accept.ame[1],4 )` percent for a 1 unit decrease in `sexacceptance_reverse`.
 
 <br>
 
@@ -323,9 +325,7 @@ The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r r
 <hr>
 <br>
 
-### Pooled Model
-
-```{r pooled-p-model, eval=TRUE}
+```{r pooled-p-model, eval=FALSE}
 
 # pooled model ----  
 pooled.formula <- 
@@ -407,13 +407,5 @@ summary( pooled.p.fit )
 
 
 ```
-
-#### Interpretation
-
-  + The negative coefficient for the `S((block==1))~nodeicov.sexacceptance_reverse` term indicates that women on the good behavior unit are more likely to receive power/influence ties if they have less accepting attitudes toward sex. This term is restricting the model to just that unit. This shows that there is a difference across these units in terms of this effect. 
-
-<br>
-<hr>
-<br>
 
 ###### ***Last updated `r format( Sys.time(), '%d %B, %Y' )`***

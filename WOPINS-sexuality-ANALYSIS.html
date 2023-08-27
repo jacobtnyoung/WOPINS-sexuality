@@ -3114,13 +3114,14 @@ less likely to receive power/influence ties; or, put differently: women
 who are less accepting of sexual orientation are more likely to receive
 power/influence ties.</li>
 </ul>
+<p><br></p>
 <div id="test-marginal-effect-for-unit-2" class="section level5">
 <h5>Test Marginal Effect for Unit 2</h5>
 <p>The average marginal effect of the
 <code>nodeicov.sexacceptance_reverse</code> term is -0.0035 with a
 <em>p</em>-value of 0.0116. The value of -0.0035 indicates that the
-probability of a tie increases by -0.0035 percent for a 1 unit change in
-<code>sexacceptance_reverse</code>.</p>
+probability of a tie increases by -0.0035 percent for a 1 unit decrease
+in <code>sexacceptance_reverse</code>.</p>
 <p><br></p>
 </div>
 </div>
@@ -3134,118 +3135,8 @@ orientation more likely to send power/influence ties to each other.</li>
 <br>
 <hr>
 <p><br></p>
-</div>
-</div>
-<div id="pooled-model" class="section level3">
-<h3>Pooled Model</h3>
-<pre><code>## Call:
-## ergm(formula = pooled.formula, constraints = ~blocks(&quot;block&quot;, 
-##     levels2 = c(2, 3)))
-## 
-## Monte Carlo Maximum Likelihood Results:
-## 
-##                                                Estimate Std. Error MCMC %
-## edges                                        -6.486e-01  1.801e+00      0
-## mutual                                        3.919e-01  5.454e-01      0
-## twopath                                      -1.353e-01  3.677e-02      0
-## gwideg.fixed.1.25                            -2.866e+00  2.320e-01      0
-## gwesp.OTP.fixed.0.75                          5.946e-01  1.275e-01      0
-## edgecov.u2.u3.pooled.net                      2.164e+00  1.490e-01      0
-## nodeifactor.sex_minority.1                   -1.981e-01  1.453e-01      0
-## nodeofactor.sex_minority.1                   -1.082e-01  2.173e-01      0
-## nodematch.sex_minority                       -9.265e-02  2.206e-01      0
-## nodeicov.sexacceptance_reverse               -6.800e-02  6.088e-02      0
-## nodeocov.sexacceptance_reverse               -6.166e-02  8.139e-02      0
-## absdiff.sexacceptance_reverse                -8.600e-02  1.003e-01      0
-## nodeicov.lage                                -3.933e-01  1.976e-01      0
-## nodeocov.lage                                 1.308e-01  3.372e-01      0
-## absdiff.lage                                  2.296e-01  3.326e-01      0
-## nodeicov.grade                               -2.063e-02  3.414e-02      0
-## nodeocov.grade                                4.603e-02  5.936e-02      0
-## absdiff.grade                                -1.743e-02  4.140e-02      0
-## nodeifactor.white.1                          -1.488e-01  1.398e-01      0
-## nodeofactor.white.1                           5.947e-05  1.915e-01      0
-## nodematch.white                              -1.935e-02  1.861e-01      0
-## nodeicov.unitdays100                         -1.050e-02  1.406e-02      0
-## nodeocov.unitdays100                         -1.104e-02  1.722e-02      0
-## absdiff.unitdays100                           7.604e-03  1.799e-02      0
-## nodeifactor.protestantbinary.1                5.151e-02  1.003e-01      0
-## nodeofactor.protestantbinary.1                1.746e-01  1.499e-01      0
-## nodematch.protestantbinary                   -1.029e-02  1.561e-01      0
-## nodeicov.healthchangefrom3mopre              -2.176e-02  7.716e-02      0
-## nodeocov.healthchangefrom3mopre               5.863e-02  1.118e-01      0
-## absdiff.healthchangefrom3mopre               -1.834e-01  1.104e-01      0
-## nodeicov.MentalPhysicalHealth                -1.105e-01  8.002e-02      0
-## nodeocov.MentalPhysicalHealth                 4.896e-02  1.202e-01      0
-## absdiff.MentalPhysicalHealth                 -8.471e-02  1.362e-01      0
-## S((block==1))~nodeifactor.sex_minority.1     -2.742e-03  2.176e-01      0
-## S((block==1))~nodeofactor.sex_minority.1      1.444e-02  3.190e-01      0
-## S((block==1))~nodematch.sex_minority          1.877e-01  3.107e-01      0
-## S((block==1))~nodeicov.sexacceptance_reverse -1.220e-01  8.571e-02      0
-## S((block==1))~nodeocov.sexacceptance_reverse -2.970e-02  1.112e-01      0
-## S((block==1))~absdiff.sexacceptance_reverse   6.376e-02  1.418e-01      0
-##                                              z value Pr(&gt;|z|)    
-## edges                                         -0.360 0.718686    
-## mutual                                         0.719 0.472361    
-## twopath                                       -3.680 0.000233 ***
-## gwideg.fixed.1.25                            -12.352  &lt; 1e-04 ***
-## gwesp.OTP.fixed.0.75                           4.661  &lt; 1e-04 ***
-## edgecov.u2.u3.pooled.net                      14.521  &lt; 1e-04 ***
-## nodeifactor.sex_minority.1                    -1.364 0.172637    
-## nodeofactor.sex_minority.1                    -0.498 0.618499    
-## nodematch.sex_minority                        -0.420 0.674522    
-## nodeicov.sexacceptance_reverse                -1.117 0.264011    
-## nodeocov.sexacceptance_reverse                -0.758 0.448732    
-## absdiff.sexacceptance_reverse                 -0.857 0.391348    
-## nodeicov.lage                                 -1.991 0.046530 *  
-## nodeocov.lage                                  0.388 0.698140    
-## absdiff.lage                                   0.690 0.490057    
-## nodeicov.grade                                -0.604 0.545698    
-## nodeocov.grade                                 0.775 0.438104    
-## absdiff.grade                                 -0.421 0.673656    
-## nodeifactor.white.1                           -1.065 0.287012    
-## nodeofactor.white.1                            0.000 0.999752    
-## nodematch.white                               -0.104 0.917224    
-## nodeicov.unitdays100                          -0.747 0.455089    
-## nodeocov.unitdays100                          -0.641 0.521376    
-## absdiff.unitdays100                            0.423 0.672500    
-## nodeifactor.protestantbinary.1                 0.513 0.607723    
-## nodeofactor.protestantbinary.1                 1.165 0.244090    
-## nodematch.protestantbinary                    -0.066 0.947477    
-## nodeicov.healthchangefrom3mopre               -0.282 0.777957    
-## nodeocov.healthchangefrom3mopre                0.524 0.600101    
-## absdiff.healthchangefrom3mopre                -1.661 0.096705 .  
-## nodeicov.MentalPhysicalHealth                 -1.381 0.167143    
-## nodeocov.MentalPhysicalHealth                  0.407 0.683708    
-## absdiff.MentalPhysicalHealth                  -0.622 0.534106    
-## S((block==1))~nodeifactor.sex_minority.1      -0.013 0.989945    
-## S((block==1))~nodeofactor.sex_minority.1       0.045 0.963891    
-## S((block==1))~nodematch.sex_minority           0.604 0.545663    
-## S((block==1))~nodeicov.sexacceptance_reverse  -1.423 0.154757    
-## S((block==1))~nodeocov.sexacceptance_reverse  -0.267 0.789361    
-## S((block==1))~absdiff.sexacceptance_reverse    0.450 0.653032    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-##      Null Deviance: 9685  on 6986  degrees of freedom
-##  Residual Deviance: 1438  on 6947  degrees of freedom
-##  
-## AIC: 1516  BIC: 1783  (Smaller is better. MC Std. Err. = 0.3882)</code></pre>
-<div id="interpretation-2" class="section level4">
-<h4>Interpretation</h4>
-<ul>
-<li>The negative coefficient for the
-<code>S((block==1))~nodeicov.sexacceptance_reverse</code> term indicates
-that women on the good behavior unit are more likely to receive
-power/influence ties if they have less accepting attitudes toward sex.
-This term is restricting the model to just that unit. This shows that
-there is a difference across these units in terms of this effect.</li>
-</ul>
-<br>
-<hr>
-<p><br></p>
-<div id="last-updated-25-august-2023" class="section level6">
-<h6><strong><em>Last updated 25 August, 2023</em></strong></h6>
+<div id="last-updated-27-august-2023" class="section level6">
+<h6><strong><em>Last updated 27 August, 2023</em></strong></h6>
 </div>
 </div>
 </div>
