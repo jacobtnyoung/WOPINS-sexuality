@@ -403,4 +403,24 @@ summary( pooled.p.fit )
 
 ```
 
+
+## Goodness of Fit
+
+```{r gof}
+
+# ----
+# GOFs for estimated models
+
+set.seed( 92915 )
+
+u2.p.model2.gof <- gof( u2.p.model2 )
+u2.p.model2.gof
+plot( u2.p.model2.gof )
+
+u3.p.model.gof <- gof( u3.p.model )
+u3.p.model.gof
+plot( u3.p.model.gof )
+
+```
+
 ###### ***Last updated `r format( Sys.time(), '%d %B, %Y' )`***
