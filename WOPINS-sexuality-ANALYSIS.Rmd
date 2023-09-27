@@ -423,4 +423,13 @@ plot( u3.p.model.gof )
 
 ```
 
+```{r save-results, echo=FALSE, eval=TRUE}
+
+# ----
+# save the estimates as an .RData object
+save.image( here( "/WOPINS-sexuality-ERGM-RESULTS.RData" ) )
+
+```
+
+
 ###### ***Last updated `r format( Sys.time(), '%d %B, %Y' )`***
