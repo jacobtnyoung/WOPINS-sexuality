@@ -427,7 +427,7 @@ plot( u3.p.model.gof )
 
 # ----
 # save the estimates as an .RData object
-save.image( here( "/WOPINS-sexuality-ERGM-RESULTS.RData" ) )
+save.image( here( "WOPINS-sexuality-ERGM-RESULTS.RData" ) )
 
 ```
 
