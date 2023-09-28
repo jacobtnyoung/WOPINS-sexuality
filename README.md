@@ -17,6 +17,9 @@ This repository contains the files used to create the analyses for the manuscrip
 
 [Build the data file](WOPINS-sexuality-BUILD.R)
 
-[Analyze the networks]()
+[Analyze the networks](WOPINS-sexuality-ANALYSIS.R)
+
+[Render the figures](WOPINS-sexuality-FIGURES.R)
+
 
 <br>
