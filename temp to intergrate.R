@@ -222,7 +222,13 @@ accept.ame
 
 
 # ----
-# save the estimates as an .RData object
+# clean up and save the estimates as an .RData object
+
+# clean workspace
+rm( list = ls()[! ls() %in% c( 
+  "u2.net","u3.net","u2.u3.pooled.net",
+  "u2.p.net","u3.p.net","u2.u3.p.pooled.net" 
+)])
 
 save.image( here( "WOPINS-sexuality-ERGM-RESULTS.RData" ) )
 
