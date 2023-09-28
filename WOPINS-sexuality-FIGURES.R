@@ -31,6 +31,11 @@ u3.p.model.gof
 plot( u3.p.model.gof )
 
 
+!!!NEED THE OTHER PLOTS HERE FOR THE FRIENDSHIP network
+
+!!!ALSO NEED TO PANEL OUTPUT THIS AS A PDF
+
+
 # ----
 # figures
 

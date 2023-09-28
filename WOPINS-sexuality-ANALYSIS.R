@@ -1,31 +1,8 @@
----
-title: "WOPINS Sexuality Analysis"
-output: 
-  html_document:
-    df_print: paged
-    theme: lumen
-    highlight: haddock
-    toc: yes
-    toc_float: yes
-    code_fold: show
-    self_contained: true
----
+# ================================================================== #
+# WOPINS Sexuality Paper.
+# ================================================================== #
 
-<style>
-body {
-text-align: justify}
-</style>
-
-```{r, echo=FALSE}
-
-# set the defaults for the codechunks
-knitr::opts_chunk$set( 
-  eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE 
-  )
-
-```
-
-```{r setup}
+# This code estimates the ERGMs.
 
 # ----------
 # Setup 
@@ -41,13 +18,11 @@ library( sna ) # for working with the network
 library( ergm ) # for erg models
 library( pander ) # for tables
 library( stargazer ) # for nice html tables
+library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
 
 # run the script to create the networks with the attributes
 source( here( "WOPINS-sexuality-BUILD.R" ) )
 
-```
-
-```{r define-friend-model}
 
 # ----------
 # ERGMs
@@ -95,35 +70,23 @@ net.f.formula <- function( net, gwideg.val, gwesp.val, seed.num ){
       + nodeofactor( "protestantbinary" )
       + nodematch( "protestantbinary" )
     )
-  
+}
+
+  # set options for model
   net.fit <- ergm( net.terms, 
                    control = control.ergm(
                      seed        = seed.num,
                      MCMLE.maxit = 1000 ) )
   return( net.fit )
   
-}
-
-```
 
 ## Models of Friendship
 
-```{r unit-2-f-model}
-
 # estimate the model ----
 u2.model <- net.f.formula( u2.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 601601 )
-
-```
-
-```{r unit-3-f-model}
-
-# estimate the model ----
 u3.model <- net.f.formula( u3.net, gwideg.val = 1.50, gwesp.val = 0.75, seed.num = 12345 )
 
-```
-
-```{r f-table}
-
+# output the table ----
 stargazer( u2.model, u3.model,
            title = "ERGMs for Friendship",
            dep.var.caption = "",
@@ -134,31 +97,8 @@ stargazer( u2.model, u3.model,
            se= list( sqrt( diag( u2.model$covar ) ), sqrt( diag( u3.model$covar ) ) ),
            type = "text" )
 
-```
-
-### Interpretation
-
-#### Unit 2
-
-  + A positive `nodeofactor.sex_minority.1` term indicates that sexual minority women are more likely to send friendship ties
-  
-  + A negative `nodeofactor.prismom` term indicates that prison mom's are less likely to send a friendship tie
-
-  + A positive `nodeocov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are more likely to send a friendship tie (*check significance level)
-
-<br>
-
-#### Unit 3
-
-No significant effects for the *sexual minority*, *prison mom*, or *acceptance of sexual orientation* variables.
-
-<br>
-<hr>
-<br>
 
 ## Models of Power/Influence
-
-```{r define-power-model}
 
 # build function with formula for ergm ----
 net.p.formula <- function( net, f.net, gwideg.val, gwesp.val, seed.num ){
@@ -207,6 +147,7 @@ net.p.formula <- function( net, f.net, gwideg.val, gwesp.val, seed.num ){
       + nodematch( "protestantbinary" )
     )
   
+  # set options for model
   net.fit <- ergm( net.terms, 
                    control = control.ergm(
                      seed        = seed.num,
@@ -215,24 +156,12 @@ net.p.formula <- function( net, f.net, gwideg.val, gwesp.val, seed.num ){
   
 }
 
-```
-
-```{r unit-2-p-model}
 
 # estimate the model ----
 u2.p.model <- net.p.formula( u2.p.net, u2.net, gwideg.val = 1.25, gwesp.val = 0.75, seed.num = 6016016 )
-
-```
-
-```{r unit-3-p-model}
-
-# estimate the model ----
 u3.p.model <- net.p.formula( u3.p.net, u3.net, gwideg.val = 1.25, gwesp.val = 0.75, seed.num = 9191919 )
 
-```
-
-```{r p-table}
-
+# output the table ----
 stargazer( u2.p.model, u3.p.model,
            title = "ERGMs for Power/Influence",
            dep.var.caption = "",
@@ -243,20 +172,9 @@ stargazer( u2.p.model, u3.p.model,
            se= list( sqrt( diag( u2.p.model$covar ) ), sqrt( diag( u3.p.model$covar ) ) ),
            type = "text" )
 
-```
+## Test Marginal Effect for Unit 2
 
-### Interpretation
-
-#### Unit 2
-
-  + A negative `nodeicov.sexacceptance_reverse` term indicates that those who are more accepting of sexual orientation are less likely to receive power/influence ties; or, put differently: women who are less accepting of sexual orientation are more likely to receive power/influence ties.
-
-<br>
-
-##### Test Marginal Effect for Unit 2
-
-```{r unit-2-p-model-ame-setup, warning=FALSE }
-
+# build the model formula witout the mutual term
 u2.p.model2 <- ergm( u2.p.net ~ edges 
       #+ offset( mutual )
       + twopath 
@@ -297,139 +215,23 @@ u2.p.model2 <- ergm( u2.p.net ~ edges
       control = control.ergm( seed = 9191919, MCMLE.maxit = 1000 ) 
       )
 
-```
-
-```{r unit-2-p-model-marginal, results=FALSE}
-
-library( ergMargins ) #devtools::install_github("sduxbury/ergMargins") 
-
+# estimate the AMEs ----
 accept.ame  <- ergm.AME( u2.p.model2, var1 = "nodeicov.sexacceptance_reverse" )
-
 accept.ame
 
-```
-
-The average marginal effect of the `nodeicov.sexacceptance_reverse` term is `r round( accept.ame[1],4 )` with a *p*-value of `r round( accept.ame[4],4 )`. The value of `r round( accept.ame[1],4 )` indicates that the probability of a tie increases by `r round( accept.ame[1],4 )` percent for a 1 unit decrease in `sexacceptance_reverse`.
-
-<br>
-
-#### Unit 3
-
-  + A negative `absdiff.sexacceptance_reverse` term indicates that women who are more similar in terms of their attitudes of sexual orientation more likely to send power/influence ties to each other.
-
-<br>
-<hr>
-<br>
-
-```{r pooled-p-model, eval=FALSE}
-
-# pooled model ----  
-pooled.formula <- 
-    ( u2.u3.p.pooled.net ~ edges 
-      
-      # structural terms
-      + mutual
-      + twopath
-      + gwidegree( 1.25, fixed=TRUE )
-      + gwesp( 0.75, fixed = TRUE )
-      
-      # friendship network
-      + edgecov( u2.u3.pooled.net )
-      
-      # # terms of interest
-      + nodeifactor( "sex_minority" )
-      + nodeofactor( "sex_minority" )
-      + nodematch( "sex_minority" )
-      + nodeicov( "sexacceptance_reverse" )
-      + nodeocov( "sexacceptance_reverse" )
-      + absdiff( "sexacceptance_reverse" )
-      + nodeicov( "MentalPhysicalHealth" )
-      + nodeocov( "MentalPhysicalHealth" )
-      + absdiff( "MentalPhysicalHealth" )
-      + nodeicov( "healthchangefrom3mopre" )
-      + nodeocov( "healthchangefrom3mopre" )
-      + absdiff( "healthchangefrom3mopre" )
-      + nodeicov( "lage" )
-      + nodeocov( "lage" )
-      + absdiff( "lage" )
-      + nodeicov( "unitdays100" )
-      + nodeocov( "unitdays100" )
-      + absdiff( "unitdays100" )
-      + nodeifactor( "prismom" )
-      + nodeofactor( "prismom" )
-      + nodematch( "prismom" )
-      + nodeicov( "grade" )
-      + nodeocov( "grade" )
-      + absdiff( "grade" )
-      + nodeifactor( "white" )
-      + nodeofactor( "white" )
-      + nodematch( "white" )
-      + nodeifactor( "protestantbinary" )
-      + nodeofactor( "protestantbinary" )
-      + nodematch( "protestantbinary" )
-      
-      # Terms to test
-      + S(
-        ~ nodeifactor( "sex_minority" ) 
-        + nodeofactor( "sex_minority" ) 
-        + nodematch( "sex_minority" )
-        + nodeicov( "sexacceptance_reverse" ) 
-        + nodeocov( "sexacceptance_reverse" ) 
-        + absdiff( "sexacceptance_reverse" ),
-        ~ ( block == 1 )
-        )
-
-)
-  
-set.seed( 601601 )
-pooled.p.fit <- ergm( 
-  pooled.formula, 
-  constraints = ~ blocks( "block", levels2 = c( 2, 3 ) ) 
-  )
-
-summary( pooled.p.fit )
-
-#stargazer( u2.p.model, u3.p.model, pooled.p.fit,
-#           title = "ERGMs for Power/Influence",
-#           dep.var.caption = "",
-#           dep.var.labels = "",
-#           column.labels = c( "Unit 2", "Unit 3", "Pooled" ),
-#           dep.var.labels.include = FALSE,
-#           coef= list( coef( u2.p.model ), coef( u3.p.model ), coef( pooled.p.fit ) ),
-#           se= list( sqrt( diag( u2.p.model$covar ) ), sqrt( diag( u3.p.model$covar ) ), sqrt( diag( pooled.p.fit$covar ) ) ),
-#           type = "text" )
-
-
-
-```
-
-
-## Goodness of Fit
-
-```{r gof}
 
 # ----
-# GOFs for estimated models
+# clean up and save the estimates as an .RData object
 
-set.seed( 92915 )
+# clean workspace
+rm( list = ls()[! ls() %in% c( 
+  "u2.net","u3.net","u2.u3.pooled.net",
+  "u2.p.net","u3.p.net","u2.u3.p.pooled.net" 
+)])
 
-u2.p.model2.gof <- gof( u2.p.model2 )
-u2.p.model2.gof
-plot( u2.p.model2.gof )
-
-u3.p.model.gof <- gof( u3.p.model )
-u3.p.model.gof
-plot( u3.p.model.gof )
-
-```
-
-```{r save-results, echo=FALSE, eval=TRUE}
-
-# ----
-# save the estimates as an .RData object
 save.image( here( "WOPINS-sexuality-ERGM-RESULTS.RData" ) )
 
-```
 
-
-###### ***Last updated `r format( Sys.time(), '%d %B, %Y' )`***
+# ================================================================== #
+# END syntax file.
+# ================================================================== #
