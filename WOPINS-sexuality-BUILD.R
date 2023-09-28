@@ -2,6 +2,8 @@
 # WOPINS Sexuality Paper.
 # ================================================================== #
 
+# This file builds the objects for analysis.
+
 # ----------
 # Setup 
 
