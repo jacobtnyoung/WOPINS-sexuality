@@ -2,7 +2,7 @@
 
 <br>
 
-## Authors: AUTHORS, [Jacob T.N. Young](https://jacobtnyoung.github.io/)
+## Authors: Derek A. Kreager, Yiwen Zhang, [Jacob T.N. Young](https://jacobtnyoung.github.io/), & Julia Dillavou
 
 ### ***Abstract***
 
