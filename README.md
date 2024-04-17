@@ -1,4 +1,4 @@
-# **[Sexuality, Social Organization, and Health in a Women’s Prison]()**
+# **[Sexuality, Social Organization, and Health in a Women’s Prison](https://journals.sagepub.com/doi/10.1177/26326663241246140)**
 
 <br>
 
@@ -6,7 +6,7 @@
 
 ### ***Abstract***
 
-Sexuality and social integration are foundational concepts for understanding women’s incarceration experiences yet are infrequent foci of contemporary carceral research. This study reevaluates classic themes with network and health data collected in two Pennsylvania women’s prison units (n=118). Incarcerated women perceived a high prevalence of sexual relationships and an overall absence of homophobic attitudes in prison. Network and correlational analyses suggest that sexual minority women had similar health and social outcomes as heterosexual peers. However, older women serving long prison sentences held more unfavorable views toward prison sex than their peers, suggesting such behaviors produced perceived negative externalities that older women wished to reduce. 
+In the United States, sexuality and sexual relationships were foundational concepts for understanding women's prisons that generally receded from carceral research as the nation's incarceration rates climbed. This study reevaluates classic themes of sexuality and women's prison informal organization using social network and health data collected in two Pennsylvania women's prison units (n = 118). Sampled women perceived a high prevalence of prison-based sexual relationships and overwhelmingly endorsed the rights of sexual minorities. Additionally, network analyses found that sexual minority women had similar friendships, social status, and self-reported health as their heterosexual peers across both units, suggesting an absence of sexual stigmatization or group segregation processes. However, older, longer-term incarcerated women were more likely than their peers to hold unfavorable views toward prison sex. This was particularly evident in a “good behavior” unit holding many older, long-term residents where overt sexual behaviors could jeopardize the unit's stability and privileges.
 
 ### ***Files***
 
